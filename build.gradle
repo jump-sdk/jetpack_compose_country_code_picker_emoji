@@ -16,6 +16,16 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
     id "com.github.ben-manes.versions" version "0.46.0"
     id 'org.jetbrains.dokka' version '1.8.10'
+    id "org.sonarqube" version "3.5.0.2730"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "jump-sdk_jetpack_compose_country_code_picker_emoji"
+        property "sonar.organization", "jump-sdk"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.kotlin.source.version", "1.8.10"
+    }
 }
 
 task clean(type: Delete) {
