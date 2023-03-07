@@ -1,4 +1,4 @@
-# Jetpack Compose Country Code Picker
+# Jetpack Compose Country Code Picker Emoji
 
 [![Android CI](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml/badge.svg)](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jump-sdk_jetpack_compose_country_code_picker_emoji&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=jump-sdk_jetpack_compose_country_code_picker_emoji)
@@ -36,6 +36,18 @@
 
 See MainActivity in the sample app for a full example.
 
+```kotlin 
+        TogiCountryCodePicker(
+            text = phoneNumber.value,
+            onValueChange = { (code, phone), isValid ->
+                Log.d("CCP", "onValueChange: $code $phone -> $isValid")
+                phoneNumber.value = phone
+                fullPhoneNumber.value = code + phone
+                isNumberValid = isValid
+            },
+        )
+```
+
 
 | Parameter       | Description                                                                                                                                                                                            |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -54,7 +66,9 @@ See MainActivity in the sample app for a full example.
 
 ## How to add in your project
 
-In the build.gradle add maven central repository
+Step 1: In the build.gradle add Jitpack repository.
+
+In Groovy:
 
 ```groovy
     repositories {
@@ -63,13 +77,22 @@ In the build.gradle add maven central repository
 
 ```
 
-Step 2. Add the dependency
+In Kts:
+
+```kotlin
+    repositories {
+        maven("https://jitpack.io")
+    }
 
 ```
+
+Step 2. Add the dependency
+
+```kotlin 
 	dependencies {
-	    implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.4'
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.1")
 	}  
-```    
+```
 
 ## Contributing
 
