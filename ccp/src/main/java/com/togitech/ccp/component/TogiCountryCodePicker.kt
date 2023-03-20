@@ -76,7 +76,7 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 fun TogiCountryCodePicker(
     text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,
-    modifier: Modifier = Modifier.wrapContentHeight(),
+    modifier: Modifier = Modifier,
     shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
