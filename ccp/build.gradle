@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
     id 'org.jetbrains.dokka'
+    id 'app.cash.paparazzi' version '1.2.0'
 }
 
 group 'com.togitech'
