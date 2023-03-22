@@ -202,12 +202,10 @@ fun Modifier.autofill(
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode
 
-    this
-        .onGloballyPositioned {
+    this.onGloballyPositioned {
             autofillNode.boundingBox = it.boundsInWindow()
             focusRequester.requestFocus()
-        }
-        .onFocusChanged { focusState ->
+        }.onFocusChanged { focusState ->
             autofill?.run {
                 if (focusState.isFocused) {
                     requestAutofillForNode(autofillNode)
