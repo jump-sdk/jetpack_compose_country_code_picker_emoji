@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +38,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -89,7 +92,7 @@ fun TogiCountryCodePicker(
     val focusRequester = remember { FocusRequester() }
 
     var phoneNumber by rememberSaveable { mutableStateOf("") }
-    val keyboardController = LocalTextInputService.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     var langAndCode by rememberSaveable {
         mutableStateOf(getDefaultPhoneCode(context, fallbackCountry))
     }
@@ -133,10 +136,12 @@ fun TogiCountryCodePicker(
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone,
             autoCorrect = true,
+            imeAction = ImeAction.Done,
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                keyboardController?.hideSoftwareKeyboard()
+                keyboardController?.hide()
+                focusRequester.freeFocus()
             },
         ),
         leadingIcon = {
@@ -202,10 +207,15 @@ fun Modifier.autofill(
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode
 
-    this.onGloballyPositioned {
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    this
+        .onGloballyPositioned {
             autofillNode.boundingBox = it.boundsInWindow()
-            focusRequester.requestFocus()
-        }.onFocusChanged { focusState ->
+        }
+        .onFocusChanged { focusState ->
             autofill?.run {
                 if (focusState.isFocused) {
                     requestAutofillForNode(autofillNode)
