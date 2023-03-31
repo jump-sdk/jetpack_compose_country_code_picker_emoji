@@ -8,7 +8,7 @@ plugins {
 }
 
 group "com.togitech"
-version "2.1.0"
+version "2.0.5"
 
 kotlin {
     jvmToolchain(11)
@@ -56,17 +56,15 @@ android {
 
 dependencies {
     api(libs.kotlinx.immutable)
-    implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.compose)
-//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
+    api(libs.libphonenumber)
+    debugImplementation(libs.compose.tooling)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.lifecycle.compose)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.compose.activity)
     implementation(libs.compose.material)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    api(libs.libphonenumber)
     implementation(libs.compose.tooling.preview)
-    debugImplementation(libs.compose.tooling)
 
     detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
     detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
@@ -84,7 +82,7 @@ afterEvaluate {
                 from(components.getByName("release"))
                 groupId = "com.togisoft"
                 artifactId = "jetpack_country_code_picker"
-                version = "2.1.0"
+                version = "2.0.5"
             }
         }
     }
