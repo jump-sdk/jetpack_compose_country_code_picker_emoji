@@ -8,7 +8,7 @@ plugins {
 }
 
 group "com.togitech"
-version "2.0.8"
+version "2.0.5"
 
 kotlin {
     jvmToolchain(11)
@@ -82,7 +82,7 @@ afterEvaluate {
                 from(components.getByName("release"))
                 groupId = "com.togisoft"
                 artifactId = "jetpack_country_code_picker"
-                version = "2.0.8"
+                version = "2.0.5"
             }
         }
     }

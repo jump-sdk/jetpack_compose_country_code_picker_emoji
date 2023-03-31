@@ -92,7 +92,7 @@ Step 2. Add the dependency
 
 ```kotlin 
 	dependencies {
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.8")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.5")
 	}  
 ```
 
