@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
       <module name="Country_Code_Picker.app" target="17" />
+      <module name="CountryCodePicker.app" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

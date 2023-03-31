@@ -10,11 +10,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://androidx.dev/storage/compose-compiler/repository/"
-        }
     }
 }
-rootProject.name = "Country Code Picker"
-include ':app'
-include ':ccp'
+rootProject.name = "CountryCodePicker"
+
+enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":app")
+include(":ccp")
