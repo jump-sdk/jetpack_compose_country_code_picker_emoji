@@ -39,11 +39,11 @@ fun TogiCodeDialog(
     defaultSelectedCountry: CountryData,
     includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
+    textColor: Color,
+    showCountryCode: Boolean,
+    showFlag: Boolean,
     modifier: Modifier = Modifier,
     padding: Dp = DEFAULT_PADDING,
-    showCountryCode: Boolean = true,
-    showFlag: Boolean = true,
-    textColor: Color = MaterialTheme.colors.onSurface,
 ) {
     val context = LocalContext.current
 
@@ -137,6 +137,9 @@ private fun TogiCodeDialogPreview() {
     TogiCodeDialog(
         defaultSelectedCountry = unitedStates,
         includeOnly = null,
+        textColor = MaterialTheme.colors.onSurface,
+        showCountryCode = true,
+        showFlag = true,
         onCountryChange = {},
     )
 }

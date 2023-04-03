@@ -53,9 +53,9 @@ See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose
 
 | Parameter       | Description                                                                                                                                                                                            |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| text            | The text to be displayed in the text field.                                                                                                                                                            |
 | onValueChange   | Called when the text in the text field changes. The first parameter is string pair of (country code, phone number) and the second parameter is a boolean indicating whether the phone number is valid. |
 | modifier        | Modifier to be applied to the inner OutlinedTextField.                                                                                                                                                 |
+| enabled         | Boolean indicating whether the field is enabled.                                                                                                                                                       |
 | shape           | Shape of the text field.                                                                                                                                                                               |
 | showCountryCode | Whether to show the country code in the text field.                                                                                                                                                    |
 | showCountryFlag | Whether to show the country flag in the text field.                                                                                                                                                    |
