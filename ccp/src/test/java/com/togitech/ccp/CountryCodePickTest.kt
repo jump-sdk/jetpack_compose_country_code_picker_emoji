@@ -44,7 +44,6 @@ class CountryCodePickTest {
                 var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
                 TogiCountryCodePicker(
-                    text = "text",
                     onValueChange = { (code, phone), isValid ->
                         phoneNumber.value = phone
                         fullPhoneNumber.value = code + phone
