@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryDataMap
-import com.togitech.ccp.data.utils.getDefaultPhoneCode
+import com.togitech.ccp.data.utils.getDefaultCountryAndPhoneCode
 import com.togitech.ccp.data.utils.isPhoneNumberValid
 import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.data.utils.unitedStates
@@ -56,11 +56,11 @@ import kotlinx.collections.immutable.ImmutableSet
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 
 /**
- * @param text The text to be displayed in the text field.
  * @param onValueChange Called when the text in the text field changes.
  * The first parameter is string pair of (country code, phone number) and the second parameter is
  * a boolean indicating whether the phone number is valid.
  * @param modifier Modifier to be applied to the inner OutlinedTextField.
+ * @param enabled Boolean indicating whether the field is enabled.
  * @param shape Shape of the text field.
  * @param showCountryCode Whether to show the country code in the text field.
  * @param showCountryFlag Whether to show the country flag in the text field.
@@ -75,9 +75,9 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 @Suppress("LongMethod")
 @Composable
 fun TogiCountryCodePicker(
-    text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
@@ -93,7 +93,7 @@ fun TogiCountryCodePicker(
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     var langAndCode by rememberSaveable {
-        mutableStateOf(getDefaultPhoneCode(context, fallbackCountry))
+        mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry))
     }
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -107,16 +107,15 @@ fun TogiCountryCodePicker(
                 focusRequester = focusRequester,
             )
             .focusRequester(focusRequester = focusRequester),
+        enabled = enabled,
         shape = shape,
         value = phoneNumber,
         onValueChange = {
             phoneNumber = it
-            if (text != it) {
-                isNumberValid = isPhoneNumberValid(
-                    fullPhoneNumber = langAndCode.second + phoneNumber,
-                )
-                onValueChange(langAndCode.second to phoneNumber, isNumberValid)
-            }
+            isNumberValid = isPhoneNumberValid(
+                fullPhoneNumber = langAndCode.second + phoneNumber,
+            )
+            onValueChange(langAndCode.second to phoneNumber, isNumberValid)
         },
         singleLine = true,
         isError = !isNumberValid,
@@ -145,6 +144,11 @@ fun TogiCountryCodePicker(
         ),
         leadingIcon = {
             TogiCodeDialog(
+                defaultSelectedCountry = countryDataMap.getOrDefault(
+                    langAndCode.first,
+                    fallbackCountry,
+                ),
+                includeOnly = includeOnly,
                 onCountryChange = {
                     langAndCode = it.countryCode to it.countryPhoneCode
                     isNumberValid = isPhoneNumberValid(
@@ -152,13 +156,9 @@ fun TogiCountryCodePicker(
                     )
                     onValueChange(langAndCode.second to phoneNumber, isNumberValid)
                 },
-                defaultSelectedCountry = countryDataMap.getOrDefault(
-                    langAndCode.first,
-                    fallbackCountry,
-                ),
+                textColor = colors.textColor(enabled = enabled).value,
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
-                includeOnly = includeOnly,
             )
         },
         trailingIcon = {
@@ -229,7 +229,6 @@ fun Modifier.autofill(
 @Composable
 private fun TogiCountryCodePickerPreview() {
     TogiCountryCodePicker(
-        text = "",
         onValueChange = { _, _ -> },
         showCountryCode = true,
         showCountryFlag = true,

@@ -22,7 +22,10 @@ private fun getDefaultLangCode(context: Context): String =
         countryCode.takeIf { !it.isNullOrBlank() } ?: Locale.current.language
     }
 
-fun getDefaultPhoneCode(context: Context, fallbackCountryData: CountryData): Pair<String, String> {
+fun getDefaultCountryAndPhoneCode(
+    context: Context,
+    fallbackCountryData: CountryData,
+): Pair<String, String> {
     val defaultCountry = getDefaultLangCode(context)
     val defaultCode: CountryData? = getLibCountries.firstOrNull { it.countryCode == defaultCountry }
     return defaultCountry to (

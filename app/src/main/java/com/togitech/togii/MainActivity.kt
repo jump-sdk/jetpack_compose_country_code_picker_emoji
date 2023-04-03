@@ -74,7 +74,6 @@ fun CountryCodePick() {
         Spacer(modifier = Modifier.height(100.dp))
 
         TogiCountryCodePicker(
-            text = phoneNumber.value,
             onValueChange = { (code, phone), isValid ->
                 Log.d("CCP", "onValueChange: $code $phone -> $isValid")
                 phoneNumber.value = phone
