@@ -10,17 +10,7 @@
 * ⚙️ Advanced customization options (see usage below)
 * 🏁 Fast! Flattened layouts and immutable collections prevent unwanted recomposition.
 * ✅ Code quality checks with Ktlint and Detekt, snapshot testing with Paparazzi
-* 🗣 Multilingual:
-    * Turkish
-    * English
-    * Italian
-    * Arabic
-    * Russian
-    * Dutch
-    * Spanish
-    * Somali
-    * French
-    * Chinese
+* 🗣 Multilingual: Turkish, English, Italian, Arabic, Russian, Dutch, Spanish, Somali, French, Chinese
 
 ## Screenshots
 
@@ -92,7 +82,7 @@ Step 2. Add the dependency
 
 ```kotlin 
 	dependencies {
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.5")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.7")
 	}  
 ```
 
@@ -100,7 +90,7 @@ Step 2. Add the dependency
 
 * [PRs](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/pulls) and [bug reports / feature requests](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues) are welcome!
 * This project is linted with [ktlint](https://github.com/pinterest/ktlint) and statically checked with [detekt](https://github.com/detekt/detekt)
-* Addtional checking done with [Twitter's](https://twitter.github.io/compose-rules/detekt/) and [appKODE's](https://github.com/appKODE/detekt-rules-compose) Jetpack Compose rules for Detekt
+* Additional checking done with [Twitter's](https://twitter.github.io/compose-rules/detekt/) and [appKODE's](https://github.com/appKODE/detekt-rules-compose) Jetpack Compose rules for Detekt
 * Treat other people with helpfulness, gratitude, and consideration! See the [JetBrains CoC](https://confluence.jetbrains.com/display/ALL/JetBrains+Open+Source+and+Community+Code+of+Conduct)
 
 
