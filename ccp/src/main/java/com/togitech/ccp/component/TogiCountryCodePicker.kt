@@ -96,8 +96,21 @@ fun TogiCountryCodePicker(
         mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry))
     }
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
+    var phoneNumberTransformation = remember(langAndCode) {
+        PhoneNumberTransformation(
+            countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode.uppercase(),
+        )
+    }
 
     OutlinedTextField(
+        value = phoneNumber,
+        onValueChange = {
+            phoneNumber = phoneNumberTransformation.preFilter(it)
+            isNumberValid = isPhoneNumberValid(
+                fullPhoneNumber = langAndCode.second + phoneNumber,
+            )
+            onValueChange(langAndCode.second to phoneNumber, isNumberValid)
+        },
         modifier = modifier
             .fillMaxWidth()
             .focusable()
@@ -108,40 +121,11 @@ fun TogiCountryCodePicker(
             )
             .focusRequester(focusRequester = focusRequester),
         enabled = enabled,
-        shape = shape,
-        value = phoneNumber,
-        onValueChange = {
-            phoneNumber = it
-            isNumberValid = isPhoneNumberValid(
-                fullPhoneNumber = langAndCode.second + phoneNumber,
-            )
-            onValueChange(langAndCode.second to phoneNumber, isNumberValid)
-        },
-        singleLine = true,
-        isError = !isNumberValid,
-        colors = colors,
-        visualTransformation = PhoneNumberTransformation(
-            countryDataMap.getOrDefault(
-                langAndCode.first,
-                fallbackCountry,
-            ).countryCode.uppercase(),
-        ),
         placeholder = {
             if (showPlaceholder) {
                 PlaceholderNumberHint(langAndCode, fallbackCountry)
             }
         },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Phone,
-            autoCorrect = true,
-            imeAction = ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                focusRequester.freeFocus()
-            },
-        ),
         leadingIcon = {
             TogiCodeDialog(
                 defaultSelectedCountry = countryDataMap.getOrDefault(
@@ -178,6 +162,22 @@ fun TogiCountryCodePicker(
                 }
             }
         },
+        isError = !isNumberValid,
+        visualTransformation = phoneNumberTransformation,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone,
+            autoCorrect = true,
+            imeAction = ImeAction.Done,
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+                focusRequester.freeFocus()
+            },
+        ),
+        singleLine = true,
+        shape = shape,
+        colors = colors,
     )
 }
 

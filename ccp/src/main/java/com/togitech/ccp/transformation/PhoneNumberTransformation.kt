@@ -8,11 +8,15 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 
+// https://medium.com/google-developer-experts/hands-on-jetpack-compose-visualtransformation-to-create-a-phone-number-formatter-99b0347fc4f6
+
 class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
 
     private val phoneNumberFormatter by lazy {
         PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
     }
+
+    fun preFilter(text: String): String = text.filter { PhoneNumberUtils.isReallyDialable(it) }
 
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation = reformat(text, Selection.getSelectionEnd(text))
