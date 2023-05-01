@@ -30,7 +30,6 @@ See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose
 
 ```kotlin 
         TogiCountryCodePicker(
-            text = phoneNumber.value,
             onValueChange = { (code, phone), isValid ->
                 Log.d("CCP", "onValueChange: $code $phone -> $isValid")
                 phoneNumber.value = phone
