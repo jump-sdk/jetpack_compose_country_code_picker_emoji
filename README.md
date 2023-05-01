@@ -10,7 +10,7 @@
 * ⚙️ Advanced customization options (see usage below)
 * 🏁 Fast! Flattened layouts and immutable collections prevent unwanted recomposition.
 * ✅ Code quality checks with Ktlint and Detekt, snapshot testing with Paparazzi
-* 🗣 Multilingual: Turkish, English, Italian, Arabic, Russian, Dutch, Spanish, Somali, French, Chinese
+* 🗣 Multilingual: Turkish, English, Italian, Arabic, Russian, Dutch, Spanish, Somali, French, Chinese, Hindi
 
 ## Screenshots
 
