@@ -8,7 +8,7 @@ targetSdk = "33"
 compileSdk = "33"
 
 # Dependencies
-android-gradle-plugin = "7.4.2"
+android-gradle-plugin = "8.0.0"
 gradle-versions = "0.46.0"
 
 accompanist = "0.30.0"
