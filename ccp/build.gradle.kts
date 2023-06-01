@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
-    id("io.gitlab.arturbosch.detekt").version("1.22.0")
+    id("io.gitlab.arturbosch.detekt").version("1.23.0")
     id("org.jetbrains.dokka")
     id("app.cash.paparazzi") version libs.versions.paparazzi.get()
 }
