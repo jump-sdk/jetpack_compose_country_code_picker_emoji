@@ -13,16 +13,15 @@ private const val EMOJI_UNICODE = 0x1F1A5
 private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.getInstance() }
 
 @Suppress("SwallowedException")
-private fun getDefaultLangCode(context: Context): String =
-    try {
+private fun getDefaultLangCode(context: Context): String {
+    val countryCode = try {
         context.telephonyManager?.networkCountryIso
     } catch (ex: java.lang.AssertionError) {
         null
-    }.let { countryCode ->
-        countryCode.takeIf { !it.isNullOrBlank() } ?: Locale.current.language
     }
-
-fun getDefaultCountryAndPhoneCode(
+    return countryCode.takeIf { !it.isNullOrBlank() } ?: Locale.current.language
+}
+internal fun getDefaultCountryAndPhoneCode(
     context: Context,
     fallbackCountryData: CountryData,
 ): Pair<String, String> {

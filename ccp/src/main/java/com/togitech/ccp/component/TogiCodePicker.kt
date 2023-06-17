@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.toImmutableList
 private val DEFAULT_PADDING = 10.dp
 
 @Composable
-fun TogiCodeDialog(
+internal fun TogiCodeDialog(
     defaultSelectedCountry: CountryData,
     includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
@@ -50,6 +50,11 @@ fun TogiCodeDialog(
     var country by remember { mutableStateOf(defaultSelectedCountry) }
     var isOpenDialog by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
+    val allCountries = getLibCountries.sortedByLocalizedName(context)
+    val countryList = includeOnly?.run {
+        val includeLowercase = map { it.lowercase() }
+        allCountries.filter { it.countryCode in includeLowercase }
+    } ?: allCountries
 
     Column(
         modifier = modifier
@@ -69,12 +74,6 @@ fun TogiCodeDialog(
         )
 
         if (isOpenDialog) {
-            val filteredCountryList = getLibCountries.sortedByLocalizedName(context)
-                .let { countries ->
-                    includeOnly?.map { it.lowercase() }?.let { includeLowercase ->
-                        countries.filter { it.countryCode in includeLowercase }
-                    } ?: countries
-                }
             CountryDialog(
                 onDismissRequest = { isOpenDialog = false },
                 context = context,
@@ -83,7 +82,7 @@ fun TogiCodeDialog(
                     country = countryItem
                     isOpenDialog = false
                 },
-                filteredCountryList = filteredCountryList.toImmutableList(),
+                filteredCountryList = countryList.toImmutableList(),
             )
         }
     }
@@ -127,9 +126,9 @@ private fun emojiCodeText(
     showFlag: Boolean,
     isPickCountry: CountryData,
     showCountryCode: Boolean,
-) = if (showFlag) { countryCodeToEmojiFlag(isPickCountry.countryCode) } else { "" } +
-    if (showCountryCode && showFlag) { "  " } else { "" } +
-    if (showCountryCode) { isPickCountry.countryPhoneCode } else { "" }
+) = (if (showFlag) countryCodeToEmojiFlag(isPickCountry.countryCode) else "") +
+    (if (showCountryCode && showFlag) "  " else "") +
+    (if (showCountryCode) isPickCountry.countryPhoneCode else "")
 
 @Preview
 @Composable

@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.8.21"
-dokka = "1.8.10"
+dokka = "1.8.20"
 
 ## SDK Versions
 minSdk = "24"
@@ -9,7 +9,8 @@ compileSdk = "33"
 
 # Dependencies
 android-gradle-plugin = "8.0.2"
-gradle-versions = "0.46.0"
+gradle-versions = "0.47.0"
+detekt = "1.23.0"
 
 accompanist = "0.30.1"
 androidx-activity-compose = "1.7.2"
