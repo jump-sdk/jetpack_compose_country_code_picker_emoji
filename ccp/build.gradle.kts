@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("maven-publish")
-    id("io.gitlab.arturbosch.detekt").version("1.22.0")
+    id("io.gitlab.arturbosch.detekt") version libs.versions.detekt.get()
     id("org.jetbrains.dokka")
     id("app.cash.paparazzi") version libs.versions.paparazzi.get()
 }
@@ -62,7 +62,9 @@ dependencies {
     implementation(libs.compose.tooling.preview)
 
     detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
-    detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
+    detektPlugins("io.nlopez.compose.rules:detekt:0.1.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-rules-libraries:${libs.versions.detekt.get()}")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detekt.get()}")
 }
 
 detekt {

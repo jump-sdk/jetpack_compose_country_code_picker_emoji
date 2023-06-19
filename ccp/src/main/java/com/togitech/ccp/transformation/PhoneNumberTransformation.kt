@@ -11,7 +11,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 // https://medium.com/google-developer-experts/hands-on-jetpack-compose-visualtransformation-to-create-a-phone-number-formatter-99b0347fc4f6
 
 class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
-
     private val phoneNumberFormatter by lazy {
         PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
     }
@@ -22,7 +21,7 @@ class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
         val transformation = reformat(text, Selection.getSelectionEnd(text))
 
         return TransformedText(
-            AnnotatedString(transformation.formatted ?: ""),
+            AnnotatedString(transformation.formatted.orEmpty()),
             object : OffsetMapping {
                 @Suppress("TooGenericExceptionCaught", "SwallowedException")
                 override fun originalToTransformed(offset: Int): Int {
@@ -33,9 +32,8 @@ class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
                     }
                 }
 
-                override fun transformedToOriginal(offset: Int): Int {
-                    return transformation.transformedToOriginal[offset]
-                }
+                override fun transformedToOriginal(offset: Int): Int =
+                    transformation.transformedToOriginal[offset]
             },
         )
     }

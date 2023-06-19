@@ -2,9 +2,13 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.data.CountryData
 
-val unitedStates = CountryData("us", "+1", "United States")
+internal val unitedStates: CountryData = CountryData(
+    cCodes = "us",
+    countryPhoneCode = "+1",
+    cNames = "United States",
+)
 
-val getLibCountries: List<CountryData> = listOf(
+internal val getLibCountries: List<CountryData> = listOf(
     CountryData("ad", "+376", "Andorra"),
     CountryData("ae", "+971", "United Arab Emirates (UAE)"),
     CountryData("af", "+93", "Afghanistan"),
@@ -248,4 +252,5 @@ val getLibCountries: List<CountryData> = listOf(
     CountryData("zw", "+263", "Zimbabwe"),
 )
 
-val countryDataMap: Map<String, CountryData> = getLibCountries.associateBy { it.countryCode }
+internal val countryDataMap: Map<String, CountryData> =
+    getLibCountries.associateBy { it.countryCode }

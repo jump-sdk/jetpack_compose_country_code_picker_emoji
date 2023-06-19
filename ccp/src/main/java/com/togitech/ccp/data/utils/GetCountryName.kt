@@ -2,7 +2,7 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.R
 
-val countryNames = mapOf(
+internal val countryNames: Map<String, Int> = mapOf(
     "ad" to R.string.andorra,
     "ae" to R.string.united_arab_emirates,
     "af" to R.string.afghanistan,

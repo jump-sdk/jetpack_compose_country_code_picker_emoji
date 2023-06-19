@@ -65,7 +65,7 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param showCountryCode Whether to show the country code in the text field.
  * @param showCountryFlag Whether to show the country flag in the text field.
  * @param colors Colors to be used for the text field.
- * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
+ * @param fallbackCountryCode The country to be used as a fallback if the user's country cannot be determined.
  * @param showPlaceholder Whether to show the placeholder number in the text field.
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
@@ -82,7 +82,7 @@ fun TogiCountryCodePicker(
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
-    fallbackCountry: CountryData = unitedStates,
+    fallbackCountryCode: String = "us",
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
@@ -92,11 +92,12 @@ fun TogiCountryCodePicker(
 
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val fallbackCountry = countryDataMap[fallbackCountryCode] ?: unitedStates
     var langAndCode by rememberSaveable {
         mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry))
     }
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
-    var phoneNumberTransformation = remember(langAndCode) {
+    val phoneNumberTransformation = remember(langAndCode) {
         PhoneNumberTransformation(
             countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode.uppercase(),
         )
@@ -104,8 +105,8 @@ fun TogiCountryCodePicker(
 
     OutlinedTextField(
         value = phoneNumber,
-        onValueChange = {
-            phoneNumber = phoneNumberTransformation.preFilter(it)
+        onValueChange = { enteredPhoneNumber ->
+            phoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
             isNumberValid = isPhoneNumberValid(
                 fullPhoneNumber = langAndCode.second + phoneNumber,
             )
@@ -133,8 +134,8 @@ fun TogiCountryCodePicker(
                     fallbackCountry,
                 ),
                 includeOnly = includeOnly,
-                onCountryChange = {
-                    langAndCode = it.countryCode to it.countryPhoneCode
+                onCountryChange = { countryData ->
+                    langAndCode = countryData.countryCode to countryData.countryPhoneCode
                     isNumberValid = isPhoneNumberValid(
                         fullPhoneNumber = langAndCode.second + phoneNumber,
                     )
@@ -197,11 +198,11 @@ private fun PlaceholderNumberHint(
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
-fun Modifier.autofill(
+internal fun Modifier.autofill(
     autofillTypes: List<AutofillType>,
     onFill: (String) -> Unit,
     focusRequester: FocusRequester,
-) = this then composed {
+): Modifier = this then composed {
     val autofill = LocalAutofill.current
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode

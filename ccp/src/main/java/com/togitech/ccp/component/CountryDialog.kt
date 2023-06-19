@@ -62,7 +62,7 @@ private val SEARCH_ICON_PADDING = 5.dp
 
 @Suppress("ModifierDefaultValue")
 @Composable
-fun CountryDialog(
+internal fun CountryDialog(
     onDismissRequest: () -> Unit,
     onSelect: (item: CountryData) -> Unit,
     filteredCountryList: ImmutableList<CountryData>,
