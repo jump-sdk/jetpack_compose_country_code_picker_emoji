@@ -61,10 +61,11 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.tooling.preview)
 
-    detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
+    detektPlugins("ru.kode:detekt-rules-compose:1.3.0")
     detektPlugins("io.nlopez.compose.rules:detekt:0.1.12")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-rules-libraries:${libs.versions.detekt.get()}")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detekt.get()}")
+    detektPlugins("com.braisgabin.detekt:kotlin-compiler-wrapper:0.0.4")
 }
 
 detekt {

@@ -100,24 +100,22 @@ private fun CodePickerRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (showCountryCode || showFlag) {
-            Text(
-                text = emojiCodeText(
-                    showFlag = showFlag,
-                    isPickCountry = country,
-                    showCountryCode = showCountryCode,
-                ),
-                modifier = Modifier.padding(start = DEFAULT_PADDING),
-                fontStyle = MaterialTheme.typography.body1.fontStyle,
-                fontWeight = fontWeight,
-                color = textColor,
-            )
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = null,
-                tint = textColor,
-            )
-        }
+        Text(
+            text = emojiCodeText(
+                showFlag = showFlag,
+                isPickCountry = country,
+                showCountryCode = showCountryCode,
+            ),
+            modifier = Modifier.padding(start = DEFAULT_PADDING),
+            fontStyle = MaterialTheme.typography.body1.fontStyle,
+            fontWeight = fontWeight,
+            color = textColor,
+        )
+        Icon(
+            imageVector = Icons.Default.ArrowDropDown,
+            contentDescription = null,
+            tint = textColor,
+        )
     }
 }
 
