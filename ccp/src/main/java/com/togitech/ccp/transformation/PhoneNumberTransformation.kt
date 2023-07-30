@@ -38,6 +38,7 @@ class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
         )
     }
 
+    @Suppress("AvoidMutableCollections", "AvoidVarsExceptWithDelegate")
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
         phoneNumberFormatter.clear()
 

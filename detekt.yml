@@ -654,8 +654,6 @@ style:
   OptionalUnit:
     active: true
     excludes: ['**/build/**']
-  OptionalWhenBraces:
-    active: true
   PreferToOverPairSyntax:
     active: true
   ProtectedMemberInFinalClass:

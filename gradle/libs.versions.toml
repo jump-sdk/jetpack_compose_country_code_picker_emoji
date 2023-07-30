@@ -10,7 +10,7 @@ compileSdk = "34"
 # Dependencies
 android-gradle-plugin = "8.1.0"
 gradle-versions = "0.47.0"
-detekt = "1.23.0"
+detekt = "1.23.1"
 
 accompanist = "0.31.5-beta"
 androidx-activity-compose = "1.7.2"
