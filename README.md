@@ -2,6 +2,7 @@
 
 [![Android CI](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml/badge.svg)](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jump-sdk_jetpack_compose_country_code_picker_emoji&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=jump-sdk_jetpack_compose_country_code_picker_emoji)
+[![Jitpack](https://jitpack.io/v/jump-sdk/jetpack_compose_country_code_picker_emoji.svg)](https://jitpack.io/#jump-sdk/jetpack_compose_country_code_picker_emoji)
 
 * 😍 Emoji flag icons - beautiful and minimizes library size
 * 🤔 Country numbers hints (option to disable)
@@ -81,7 +82,7 @@ Step 2. Add the dependency
 
 ```kotlin 
 	dependencies {
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.7")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.8")
 	}  
 ```
 
