@@ -12,7 +12,7 @@ android-gradle-plugin = "8.1.0"
 gradle-versions = "0.47.0"
 detekt = "1.23.1"
 
-accompanist = "0.31.5-beta"
+accompanist = "0.31.6-rc"
 androidx-activity-compose = "1.7.2"
 androidx-core = "1.12.0-beta01"
 androidx-lifecycle = "2.6.1"
@@ -26,7 +26,7 @@ composeCompiler = "1.5.1"
 kotlinx-coroutines = "1.7.3"
 kotlinx-collections-immutable = "0.3.5"
 
-libphonenumber = "8.13.17"
+libphonenumber = "8.13.18"
 
 junit = "4.13.2"
 robolectric = "4.10.3"
