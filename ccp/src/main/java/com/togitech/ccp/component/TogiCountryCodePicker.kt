@@ -197,7 +197,7 @@ private fun PlaceholderNumberHint(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@ExperimentalComposeUiApi
 internal fun Modifier.autofill(
     autofillTypes: List<AutofillType>,
     onFill: (String) -> Unit,
