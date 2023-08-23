@@ -18,7 +18,7 @@ androidx-core = "1.12.0-rc01"
 androidx-lifecycle = "2.6.1"
 androidx-test-junit = "1.1.5"
 
-compose = "1.5.0-rc01"
+compose = "1.5.0"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 composeCompiler = "1.5.1"
@@ -26,7 +26,7 @@ composeCompiler = "1.5.1"
 kotlinx-coroutines = "1.7.3"
 kotlinx-collections-immutable = "0.3.5"
 
-libphonenumber = "8.13.18"
+libphonenumber = "8.13.19"
 
 junit = "4.13.2"
 robolectric = "4.10.3"
