@@ -3,14 +3,9 @@ package com.togitech.ccp.data.utils
 import android.content.Context
 import android.telephony.TelephonyManager
 import androidx.compose.ui.text.intl.Locale
-import com.google.i18n.phonenumbers.NumberParseException
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.togitech.ccp.data.CountryData
 
-private const val MIN_PHONE_LENGTH = 6
 private const val EMOJI_UNICODE = 0x1F1A5
-
-private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.getInstance() }
 
 @Suppress("SwallowedException")
 private fun getDefaultLangCode(context: Context): String {
@@ -33,17 +28,6 @@ internal fun getDefaultCountryAndPhoneCode(
         } ?: fallbackCountryData.countryPhoneCode
         )
 }
-
-fun isPhoneNumberValid(fullPhoneNumber: String): Boolean =
-    if (fullPhoneNumber.length > MIN_PHONE_LENGTH) {
-        try {
-            phoneUtil.isValidNumber(phoneUtil.parse(fullPhoneNumber, null))
-        } catch (ex: NumberParseException) {
-            false
-        }
-    } else {
-        false
-    }
 
 fun countryCodeToEmojiFlag(countryCode: String): String =
     countryCode

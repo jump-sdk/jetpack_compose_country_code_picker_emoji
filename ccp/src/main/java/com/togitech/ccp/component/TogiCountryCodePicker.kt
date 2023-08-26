@@ -45,9 +45,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
+import com.togitech.ccp.data.utils.ValidatePhoneNumber
 import com.togitech.ccp.data.utils.countryDataMap
 import com.togitech.ccp.data.utils.getDefaultCountryAndPhoneCode
-import com.togitech.ccp.data.utils.isPhoneNumberValid
 import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
@@ -100,14 +100,16 @@ fun TogiCountryCodePicker(
     val phoneNumberTransformation = remember(langAndCode) {
         PhoneNumberTransformation(
             countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode.uppercase(),
+            context,
         )
     }
+    val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
 
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
             phoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
-            isNumberValid = isPhoneNumberValid(
+            isNumberValid = validatePhoneNumber(
                 fullPhoneNumber = langAndCode.second + phoneNumber,
             )
             onValueChange(langAndCode.second to phoneNumber, isNumberValid)
@@ -136,7 +138,7 @@ fun TogiCountryCodePicker(
                 includeOnly = includeOnly,
                 onCountryChange = { countryData ->
                     langAndCode = countryData.countryCode to countryData.countryPhoneCode
-                    isNumberValid = isPhoneNumberValid(
+                    isNumberValid = validatePhoneNumber(
                         fullPhoneNumber = langAndCode.second + phoneNumber,
                     )
                     onValueChange(langAndCode.second to phoneNumber, isNumberValid)
