@@ -8,11 +8,11 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Dependencies
-android-gradle-plugin = "8.1.0"
+android-gradle-plugin = "8.2.0-beta01"
 gradle-versions = "0.47.0"
 detekt = "1.23.1"
 
-accompanist = "0.31.6-rc"
+accompanist = "0.32.0"
 androidx-activity-compose = "1.7.2"
 androidx-core = "1.12.0-rc01"
 androidx-lifecycle = "2.6.1"
@@ -21,12 +21,12 @@ androidx-test-junit = "1.1.5"
 compose = "1.5.0"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-composeCompiler = "1.5.1"
+composeCompiler = "1.5.2"
 
 kotlinx-coroutines = "1.7.3"
 kotlinx-collections-immutable = "0.3.5"
 
-libphonenumber = "8.13.19"
+libphonenumber = "8.13.17"
 
 junit = "4.13.2"
 robolectric = "4.10.3"
@@ -52,7 +52,7 @@ compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 
-libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
+libphonenumber = { module = "io.michaelrocks:libphonenumber-android", version.ref = "libphonenumber" }
 
 kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 

@@ -1,18 +1,19 @@
 package com.togitech.ccp.transformation
 
+import android.content.Context
 import android.telephony.PhoneNumberUtils
 import android.text.Selection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import com.google.i18n.phonenumbers.PhoneNumberUtil
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
 // https://medium.com/google-developer-experts/hands-on-jetpack-compose-visualtransformation-to-create-a-phone-number-formatter-99b0347fc4f6
 
-class PhoneNumberTransformation(countryCode: String) : VisualTransformation {
+class PhoneNumberTransformation(countryCode: String, context: Context) : VisualTransformation {
     private val phoneNumberFormatter by lazy {
-        PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
+        PhoneNumberUtil.createInstance(context).getAsYouTypeFormatter(countryCode)
     }
 
     fun preFilter(text: String): String = text.filter { PhoneNumberUtils.isReallyDialable(it) }
