@@ -12,7 +12,7 @@ sonarqube {
         property("sonar.projectKey", "jump-sdk_jetpack_compose_country_code_picker_emoji")
         property("sonar.organization", "jump-sdk")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.kotlin.source.version", "1.9.0")
+        property("sonar.kotlin.source.version", "1.9.10")
         property("sonar.pullrequest.github.summary_comment", "true")
     }
 }
