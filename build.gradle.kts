@@ -3,7 +3,7 @@ plugins {
     id("com.android.library") version libs.versions.android.gradle.plugin apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin apply false
     id("org.jetbrains.dokka") version libs.versions.dokka
-    id("org.sonarqube") version "4.3.0.3225"
+    id("org.sonarqube") version "4.3.1.3277"
     alias(libs.plugins.gradleVersions)
 }
 

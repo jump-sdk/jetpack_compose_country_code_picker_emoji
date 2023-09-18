@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.10"
-dokka = "1.8.20"
+dokka = "1.9.0"
 
 ## SDK Versions
 minSdk = "24"
@@ -8,17 +8,17 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Dependencies
-android-gradle-plugin = "8.2.0-beta01"
-gradle-versions = "0.47.0"
+android-gradle-plugin = "8.2.0-beta04"
+gradle-versions = "0.48.0"
 detekt = "1.23.1"
 
 accompanist = "0.32.0"
-androidx-activity-compose = "1.7.2"
-androidx-core = "1.12.0-rc01"
-androidx-lifecycle = "2.6.1"
+androidx-activity-compose = "1.8.0-beta01"
+androidx-core = "1.12.0"
+androidx-lifecycle = "2.6.2"
 androidx-test-junit = "1.1.5"
 
-compose = "1.5.0"
+compose = "1.5.1"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 composeCompiler = "1.5.3"
