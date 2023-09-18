@@ -25,7 +25,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
