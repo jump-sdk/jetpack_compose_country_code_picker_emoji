@@ -37,7 +37,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -52,6 +51,7 @@ import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
+// import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 
@@ -100,13 +100,13 @@ fun TogiCountryCodePicker(
         autoCorrect = true,
         imeAction = ImeAction.Done,
     ),
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
 
     var phoneNumber by rememberSaveable { mutableStateOf("") }
-    val keyboardController = LocalSoftwareKeyboardController.current
+//    val keyboardController = LocalSoftwareKeyboardController.current
     val fallbackCountry = countryDataMap[fallbackCountryCode] ?: unitedStates
     var langAndCode by rememberSaveable {
         mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry))
