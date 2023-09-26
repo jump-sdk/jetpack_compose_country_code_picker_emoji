@@ -254,3 +254,9 @@ internal val getLibCountries: List<CountryData> = listOf(
 
 internal val countryDataMap: Map<String, CountryData> =
     getLibCountries.associateBy { it.countryCode }
+
+/**
+ * Retrieve Country Data using country phone code.
+ */
+internal val countryDataMapPhoneCode: Map<String, CountryData> =
+    getLibCountries.associateBy { it.countryPhoneCode }
