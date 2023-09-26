@@ -86,6 +86,12 @@ fun TogiCountryCodePicker(
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(
+        keyboardType = KeyboardType.Phone,
+        autoCorrect = true,
+        imeAction = ImeAction.Done,
+    ),
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -104,7 +110,6 @@ fun TogiCountryCodePicker(
         )
     }
     val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
-
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
@@ -167,17 +172,8 @@ fun TogiCountryCodePicker(
         },
         isError = !isNumberValid,
         visualTransformation = phoneNumberTransformation,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Phone,
-            autoCorrect = true,
-            imeAction = ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                focusRequester.freeFocus()
-            },
-        ),
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         singleLine = true,
         shape = shape,
         colors = colors,
