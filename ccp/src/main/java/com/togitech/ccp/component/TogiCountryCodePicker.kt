@@ -70,6 +70,15 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ * @param keyboardOptions An optional [KeyboardOptions] to customize keyboard options -
+ *
+ * Default: type to [KeyboardType.Phone]
+ *
+ * auto correction [KeyboardOptions.autoCorrect] true
+ *
+ * [KeyboardOptions.imeAction] Done
+ * @param keyboardActions An optional [KeyboardActions] to customize keyboard actions.
+ * Default value is [KeyboardActions.Default]
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
