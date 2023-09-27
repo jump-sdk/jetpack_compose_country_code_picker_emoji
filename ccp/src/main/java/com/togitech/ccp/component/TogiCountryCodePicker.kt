@@ -70,6 +70,7 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ * @param label An optional composable to be used as a label for input field
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -86,6 +87,9 @@ fun TogiCountryCodePicker(
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
+    label:
+    @Composable()
+    (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -124,6 +128,7 @@ fun TogiCountryCodePicker(
             )
             .focusRequester(focusRequester = focusRequester),
         enabled = enabled,
+        label = label,
         placeholder = {
             if (showPlaceholder) {
                 PlaceholderNumberHint(langAndCode, fallbackCountry)
