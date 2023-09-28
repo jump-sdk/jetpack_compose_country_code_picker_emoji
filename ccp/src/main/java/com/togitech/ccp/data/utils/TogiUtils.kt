@@ -19,7 +19,14 @@ private fun getDefaultLangCode(context: Context): String {
 internal fun getDefaultCountryAndPhoneCode(
     context: Context,
     fallbackCountryData: CountryData,
+    initialCountryData: CountryData?,
 ): Pair<String, String> {
+    // return initial country data if passed
+    if (initialCountryData != null) {
+        val initialCountryCode = initialCountryData.countryCode
+        val initialCountryPhoneCode = initialCountryData.countryPhoneCode
+        return initialCountryCode to initialCountryPhoneCode
+    }
     val defaultCountry = getDefaultLangCode(context)
     val defaultCode: CountryData? = getLibCountries.firstOrNull { it.countryCode == defaultCountry }
     return defaultCountry to (

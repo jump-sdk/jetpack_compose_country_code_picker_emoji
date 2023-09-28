@@ -48,6 +48,7 @@ import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.ValidatePhoneNumber
 import com.togitech.ccp.data.utils.countryDataMap
+import com.togitech.ccp.data.utils.countryDataMapPhoneCode
 import com.togitech.ccp.data.utils.getDefaultCountryAndPhoneCode
 import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.data.utils.unitedStates
@@ -71,6 +72,11 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ * @param initialPhoneNumber an optional phone number to be initial value of the input field
+ * @param initialCountryCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
+ * of the initially selected country.
+ * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
+ * @param label An optional composable to be used as a label for input field
  * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
  */
 @OptIn(ExperimentalComposeUiApi::class)
@@ -88,18 +94,30 @@ fun TogiCountryCodePicker(
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
+    initialPhoneNumber: String? = null,
+    initialCountryCode: String? = null,
+    initialCountryPhoneCode: String? = null,
+    label:
+    @Composable()
+    (() -> Unit)? = null,
     textStyle: TextStyle = TextStyle(),
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
-
-    var phoneNumber by rememberSaveable { mutableStateOf("") }
+    var phoneNumber by rememberSaveable(initialPhoneNumber) { mutableStateOf(initialPhoneNumber.orEmpty()) }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val fallbackCountry = countryDataMap[fallbackCountryCode] ?: unitedStates
-    var langAndCode by rememberSaveable {
-        mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry))
+    val fallbackCountry = countryDataMap[fallbackCountryCode]
+        ?: unitedStates
+    val initialCountry: CountryData? = countryDataMapPhoneCode[initialCountryPhoneCode]
+        ?: countryDataMap[initialCountryCode]
+    var langAndCode by rememberSaveable(
+        context,
+        fallbackCountry,
+        initialCountry,
+    ) {
+        mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry, initialCountry))
     }
-    var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
+
     val phoneNumberTransformation = remember(langAndCode) {
         PhoneNumberTransformation(
             countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode.uppercase(),
@@ -107,6 +125,14 @@ fun TogiCountryCodePicker(
         )
     }
     val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
+
+    var isNumberValid: Boolean by rememberSaveable(langAndCode.second, phoneNumber) {
+        mutableStateOf(
+            validatePhoneNumber(
+                fullPhoneNumber = langAndCode.second + phoneNumber,
+            ),
+        )
+    }
 
     OutlinedTextField(
         value = phoneNumber,
@@ -128,6 +154,7 @@ fun TogiCountryCodePicker(
             .focusRequester(focusRequester = focusRequester),
         enabled = enabled,
         textStyle = textStyle,
+        label = label,
         placeholder = {
             if (showPlaceholder) {
                 PlaceholderNumberHint(langAndCode, fallbackCountry)
