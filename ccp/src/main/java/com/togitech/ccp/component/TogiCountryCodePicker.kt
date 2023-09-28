@@ -75,6 +75,8 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param initialCountryCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
  * of the initially selected country.
  * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
+ * @param label An optional composable to be used as a label for input field
+
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -94,6 +96,9 @@ fun TogiCountryCodePicker(
     initialPhoneNumber: String? = null,
     initialCountryCode: String? = null,
     initialCountryPhoneCode: String? = null,
+    label:
+    @Composable()
+    (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -146,6 +151,7 @@ fun TogiCountryCodePicker(
             )
             .focusRequester(focusRequester = focusRequester),
         enabled = enabled,
+        label = label,
         placeholder = {
             if (showPlaceholder) {
                 PlaceholderNumberHint(langAndCode, fallbackCountry)
