@@ -5,7 +5,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -26,8 +29,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
-import com.togitech.ccp.data.utils.getLibCountries
-import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.utils.sortedByLocalizedName
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
@@ -36,7 +37,7 @@ private val DEFAULT_PADDING = 10.dp
 
 @Composable
 internal fun TogiCodeDialog(
-    defaultSelectedCountry: CountryData,
+    selectedCountry: CountryData,
     includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
     textColor: Color,
@@ -47,13 +48,13 @@ internal fun TogiCodeDialog(
 ) {
     val context = LocalContext.current
 
-    var country by remember { mutableStateOf(defaultSelectedCountry) }
+    var country by remember { mutableStateOf(selectedCountry) }
     var isOpenDialog by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
-    val allCountries = getLibCountries.sortedByLocalizedName(context)
+    val allCountries = CountryData.entries.sortedByLocalizedName(context)
     val countryList = includeOnly?.run {
-        val includeLowercase = map { it.lowercase() }
-        allCountries.filter { it.countryCode in includeLowercase }
+        val includeUppercase = map { it.uppercase() }
+        allCountries.filter { it.countryIso in includeUppercase }
     } ?: allCountries
 
     Column(
@@ -75,8 +76,8 @@ internal fun TogiCodeDialog(
 
         if (isOpenDialog) {
             CountryDialog(
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
                 onDismissRequest = { isOpenDialog = false },
-                context = context,
                 onSelect = { countryItem ->
                     onCountryChange(countryItem)
                     country = countryItem
@@ -124,7 +125,7 @@ private fun emojiCodeText(
     showFlag: Boolean,
     isPickCountry: CountryData,
     showCountryCode: Boolean,
-) = (if (showFlag) countryCodeToEmojiFlag(isPickCountry.countryCode) else "") +
+) = (if (showFlag) countryCodeToEmojiFlag(isPickCountry.countryIso) else "") +
     (if (showCountryCode && showFlag) "  " else "") +
     (if (showCountryCode) isPickCountry.countryPhoneCode else "")
 
@@ -132,7 +133,7 @@ private fun emojiCodeText(
 @Composable
 private fun TogiCodeDialogPreview() {
     TogiCodeDialog(
-        defaultSelectedCountry = unitedStates,
+        selectedCountry = CountryData.UnitedStates,
         includeOnly = null,
         textColor = MaterialTheme.colors.onSurface,
         showCountryCode = true,

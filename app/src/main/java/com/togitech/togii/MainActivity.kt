@@ -30,7 +30,6 @@ import com.togitech.ccp.component.TogiCountryCodePicker
 import com.togitech.togii.ui.theme.TogiiTheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -2,7 +2,8 @@ name: Publish Dokka HTML to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - '*'
 
 jobs:
   build:

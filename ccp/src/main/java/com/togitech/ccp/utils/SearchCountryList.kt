@@ -7,7 +7,7 @@ import com.togitech.ccp.data.utils.countryNames
 
 internal fun List<CountryData>.searchCountry(key: String, context: Context): List<CountryData> =
     this.mapNotNull { countryData ->
-        countryNames[countryData.countryCode]?.let { countryName ->
+        countryNames[countryData.countryIso]?.let { countryName ->
             val localizedCountryName = context.resources.getString(countryName).lowercase()
             if (localizedCountryName.contains(key.lowercase())) {
                 countryData to localizedCountryName
@@ -24,6 +24,6 @@ internal fun List<CountryData>.searchCountry(key: String, context: Context): Lis
 internal fun List<CountryData>.sortedByLocalizedName(context: Context): List<CountryData> =
     this.sortedBy {
         context.resources.getString(
-            countryNames.getOrDefault(it.countryCode, R.string.unknown),
+            countryNames.getOrDefault(it.countryIso, R.string.unknown),
         )
     }

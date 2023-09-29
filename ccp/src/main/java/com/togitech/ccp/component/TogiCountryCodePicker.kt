@@ -45,12 +45,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
+import com.togitech.ccp.data.Iso31661alpha2
+import com.togitech.ccp.data.PhoneCode
 import com.togitech.ccp.data.utils.ValidatePhoneNumber
-import com.togitech.ccp.data.utils.countryDataMap
-import com.togitech.ccp.data.utils.countryDataMapPhoneCode
+import com.togitech.ccp.data.utils.getCountryFromPhoneCode
 import com.togitech.ccp.data.utils.getDefaultCountryAndPhoneCode
 import com.togitech.ccp.data.utils.numberHint
-import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
@@ -66,13 +66,13 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param showCountryCode Whether to show the country code in the text field.
  * @param showCountryFlag Whether to show the country flag in the text field.
  * @param colors Colors to be used for the text field.
- * @param fallbackCountryCode The country to be used as a fallback if the user's country cannot be determined.
+ * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
  * @param showPlaceholder Whether to show the placeholder number in the text field.
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
- * @param initialCountryCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
+ * @param initialCountryIsoCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
  * of the initially selected country.
  * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
  * @param label An optional composable to be used as a label for input field
@@ -89,45 +89,42 @@ fun TogiCountryCodePicker(
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
-    fallbackCountryCode: String = "us",
+    fallbackCountry: CountryData = CountryData.UnitedStates,
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
     initialPhoneNumber: String? = null,
-    initialCountryCode: String? = null,
-    initialCountryPhoneCode: String? = null,
-    label:
-    @Composable()
-    (() -> Unit)? = null,
+    initialCountryIsoCode: Iso31661alpha2? = null,
+    initialCountryPhoneCode: PhoneCode? = null,
+    label: @Composable (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
-    var phoneNumber by rememberSaveable(initialPhoneNumber) { mutableStateOf(initialPhoneNumber.orEmpty()) }
+    var phoneNumber by rememberSaveable(initialPhoneNumber) {
+        mutableStateOf(initialPhoneNumber.orEmpty())
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val fallbackCountry = countryDataMap[fallbackCountryCode]
-        ?: unitedStates
-    val initialCountry: CountryData? = countryDataMapPhoneCode[initialCountryPhoneCode]
-        ?: countryDataMap[initialCountryCode]
-    var langAndCode by rememberSaveable(
+
+    var country: CountryData by rememberSaveable(
         context,
-        fallbackCountry,
-        initialCountry,
+        initialCountryPhoneCode,
+        initialCountryIsoCode,
     ) {
-        mutableStateOf(getDefaultCountryAndPhoneCode(context, fallbackCountry, initialCountry))
+        val initialCountry: CountryData? = initialCountryPhoneCode?.let {
+            getCountryFromPhoneCode(it, context)
+        } ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
+        mutableStateOf(initialCountry ?: getDefaultCountryAndPhoneCode(context, fallbackCountry))
     }
 
-    val phoneNumberTransformation = remember(langAndCode) {
-        PhoneNumberTransformation(
-            countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode.uppercase(),
-            context,
-        )
+    val phoneNumberTransformation = remember(country) {
+        PhoneNumberTransformation(country.countryIso, context)
     }
     val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
 
-    var isNumberValid: Boolean by rememberSaveable(langAndCode.second, phoneNumber) {
+    var isNumberValid: Boolean by rememberSaveable(country.countryPhoneCode, phoneNumber) {
         mutableStateOf(
             validatePhoneNumber(
-                fullPhoneNumber = langAndCode.second + phoneNumber,
+                fullPhoneNumber = country.countryPhoneCode + phoneNumber,
             ),
         )
     }
@@ -137,9 +134,9 @@ fun TogiCountryCodePicker(
         onValueChange = { enteredPhoneNumber ->
             phoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
             isNumberValid = validatePhoneNumber(
-                fullPhoneNumber = langAndCode.second + phoneNumber,
+                fullPhoneNumber = country.countryPhoneCode + phoneNumber,
             )
-            onValueChange(langAndCode.second to phoneNumber, isNumberValid)
+            onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
         },
         modifier = modifier
             .fillMaxWidth()
@@ -154,22 +151,19 @@ fun TogiCountryCodePicker(
         label = label,
         placeholder = {
             if (showPlaceholder) {
-                PlaceholderNumberHint(langAndCode, fallbackCountry)
+                PlaceholderNumberHint(country.countryPhoneCode)
             }
         },
         leadingIcon = {
             TogiCodeDialog(
-                defaultSelectedCountry = countryDataMap.getOrDefault(
-                    langAndCode.first,
-                    fallbackCountry,
-                ),
+                selectedCountry = country,
                 includeOnly = includeOnly,
                 onCountryChange = { countryData ->
-                    langAndCode = countryData.countryCode to countryData.countryPhoneCode
+                    country = countryData
                     isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = langAndCode.second + phoneNumber,
+                        fullPhoneNumber = country.countryIso + phoneNumber,
                     )
-                    onValueChange(langAndCode.second to phoneNumber, isNumberValid)
+                    onValueChange(country.countryIso to phoneNumber, isNumberValid)
                 },
                 textColor = colors.textColor(enabled = enabled).value,
                 showCountryCode = showCountryCode,
@@ -182,7 +176,7 @@ fun TogiCountryCodePicker(
                     onClick = {
                         phoneNumber = ""
                         isNumberValid = false
-                        onValueChange(langAndCode.second to phoneNumber, isNumberValid)
+                        onValueChange(country.countryIso to phoneNumber, isNumberValid)
                     },
                 ) {
                     Icon(
@@ -213,16 +207,10 @@ fun TogiCountryCodePicker(
 }
 
 @Composable
-private fun PlaceholderNumberHint(
-    langAndCode: Pair<String, String>,
-    fallbackCountry: CountryData,
-) {
+private fun PlaceholderNumberHint(countryIso: Iso31661alpha2) {
     Text(
         text = stringResource(
-            id = numberHint.getOrDefault(
-                countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode,
-                R.string.unknown,
-            ),
+            id = numberHint.getOrDefault(countryIso, R.string.unknown),
         ),
     )
 }

@@ -3,6 +3,7 @@
 [![Android CI](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml/badge.svg)](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jump-sdk_jetpack_compose_country_code_picker_emoji&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=jump-sdk_jetpack_compose_country_code_picker_emoji)
 [![Jitpack](https://jitpack.io/v/jump-sdk/jetpack_compose_country_code_picker_emoji.svg)](https://jitpack.io/#jump-sdk/jetpack_compose_country_code_picker_emoji)
+[![Documentation](https://img.shields.io/badge/Documentation-3d3d41?logo=kotlin)](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/)
 
 * 😍 Emoji flag icons - beautiful and minimizes library size
 * 🤔 Country numbers hints (option to disable)
@@ -28,6 +29,7 @@
 
 
 See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/blob/master/app/src/main/java/com/togitech/togii/MainActivity.kt) for a full example.
+Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/) for all available composables and utilities.
 
 ```kotlin 
         TogiCountryCodePicker(
@@ -87,7 +89,7 @@ Step 2. Add the dependency
 
 ```kotlin 
 	dependencies {
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.8")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.1.2")
 	}  
 ```
 
