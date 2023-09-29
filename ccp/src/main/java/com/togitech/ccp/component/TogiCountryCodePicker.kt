@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.util.Log
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,6 +56,7 @@ import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
+private const val TAG = "TogiCountryCodePicker"
 
 /**
  * @param onValueChange Called when the text in the text field changes.
@@ -73,7 +75,7 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
  * @param initialCountryIsoCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
- * of the initially selected country.
+ * of the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
  * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
  * @param label An optional composable to be used as a label for input field
 
@@ -110,6 +112,12 @@ fun TogiCountryCodePicker(
         initialCountryPhoneCode,
         initialCountryIsoCode,
     ) {
+        if (initialPhoneNumber?.startsWith("+") == true) {
+            Log.e(TAG, "initialPhoneNumber must not include the country code")
+        }
+        if (initialCountryPhoneCode?.startsWith("+") != true) {
+            Log.e(TAG, "initialCountryPhoneCode must start with +")
+        }
         val initialCountry: CountryData? = initialCountryPhoneCode?.let {
             getCountryFromPhoneCode(it, context)
         } ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
