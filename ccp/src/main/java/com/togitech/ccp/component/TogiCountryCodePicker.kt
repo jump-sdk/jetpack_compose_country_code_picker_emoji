@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldColors
@@ -30,7 +29,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.boundsInWindow
@@ -50,7 +48,7 @@ import com.togitech.ccp.data.Iso31661alpha2
 import com.togitech.ccp.data.PhoneCode
 import com.togitech.ccp.data.utils.ValidatePhoneNumber
 import com.togitech.ccp.data.utils.getCountryFromPhoneCode
-import com.togitech.ccp.data.utils.getDefaultCountryAndPhoneCode
+import com.togitech.ccp.data.utils.getUserIsoCode
 import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
@@ -121,7 +119,9 @@ fun TogiCountryCodePicker(
         val initialCountry: CountryData? = initialCountryPhoneCode?.let {
             getCountryFromPhoneCode(it, context)
         } ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
-        mutableStateOf(initialCountry ?: getDefaultCountryAndPhoneCode(context, fallbackCountry))
+        mutableStateOf(
+            initialCountry ?: CountryData.isoMap[getUserIsoCode(context)] ?: fallbackCountry,
+        )
     }
 
     val phoneNumberTransformation = remember(country) {
@@ -129,7 +129,7 @@ fun TogiCountryCodePicker(
     }
     val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
 
-    var isNumberValid: Boolean by rememberSaveable(country.countryPhoneCode, phoneNumber) {
+    var isNumberValid: Boolean by rememberSaveable(country, phoneNumber) {
         mutableStateOf(
             validatePhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber,
@@ -190,7 +190,15 @@ fun TogiCountryCodePicker(
                     Icon(
                         imageVector = it,
                         contentDescription = "Clear",
-                        tint = if (!isNumberValid) Color.Red else MaterialTheme.colors.onSurface,
+                        tint = if (!isNumberValid) {
+                            colors
+                                .trailingIconColor(enabled = true, isError = true)
+                                .value
+                        } else {
+                            colors
+                                .trailingIconColor(enabled = true, isError = false)
+                                .value
+                       },
                     )
                 }
             }

@@ -245,7 +245,9 @@ enum class CountryData(val countryIso: Iso31661alpha2, val countryPhoneCode: Pho
     SouthAfrica("ZA", "+27"),
     Zambia("ZM", "+260"),
     Zimbabwe("ZW", "+263"),
-}
+    ;
 
-val countryDataMap: Map<Iso31661alpha2, CountryData> =
-    CountryData.entries.associateBy { it.countryIso }
+    companion object {
+        val isoMap: Map<Iso31661alpha2, CountryData> = entries.associateBy { it.countryIso }
+    }
+}
