@@ -1,9 +1,10 @@
 package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.R
+import com.togitech.ccp.data.Iso31661alpha2
 
 @Suppress("LongMethod", "CyclomaticComplexMethod")
-internal val numberHint: Map<String, Int> = mapOf(
+internal val numberHint: Map<Iso31661alpha2, Int> = mapOf(
     "AD" to R.string.andorra_hint,
     "AE" to R.string.united_arab_emirates_hint,
     "AF" to R.string.afganistan_hint,
@@ -102,10 +103,10 @@ internal val numberHint: Map<String, Int> = mapOf(
     "ID" to R.string.indonesia_hint,
     "IE" to R.string.ireland_hint,
     "IL" to R.string.israil_hint,
-    "IM" to R.string.isle_of_man,
-    "IS" to R.string.iceland,
+    "IM" to R.string.isle_of_man_hint,
+    "IS" to R.string.iceland_hint,
     "IN" to R.string.india_hint,
-    "IO" to R.string.british_indian_ocean,
+    "IO" to R.string.british_indian_ocean_hint,
     "IQ" to R.string.iraq_hint,
     "IR" to R.string.iran_hint,
     "IT" to R.string.italia_hint,
@@ -116,7 +117,7 @@ internal val numberHint: Map<String, Int> = mapOf(
     "KE" to R.string.kenya_hint,
     "KG" to R.string.kyrgyzstan_hint,
     "KH" to R.string.cambodia_hint,
-    "KI" to R.string.kiribati,
+    "KI" to R.string.kiribati_hint,
     "KM" to R.string.comoros_hint,
     "KN" to R.string.saint_kitts_hint,
     "KP" to R.string.north_korea_hint,
@@ -127,7 +128,7 @@ internal val numberHint: Map<String, Int> = mapOf(
     "LA" to R.string.laos_hint,
     "LB" to R.string.lebanon_hint,
     "LC" to R.string.saint_lucia_hint,
-    "LI" to R.string.liechtenstein,
+    "LI" to R.string.liechtenstein_hint,
     "LK" to R.string.siri_lanka_hint,
     "LR" to R.string.liberia_hint,
     "LS" to R.string.lesotho_hint,
@@ -163,7 +164,7 @@ internal val numberHint: Map<String, Int> = mapOf(
     "NE" to R.string.niger_hint,
     "NF" to R.string.norfolk_hint,
     "NG" to R.string.nigeria_hint,
-    "NI" to R.string.nicaragua,
+    "NI" to R.string.nicaragua_hint,
     "NL" to R.string.netherlands_hint,
     "NO" to R.string.norway_hint,
     "NP" to R.string.nepal_hint,
@@ -179,7 +180,7 @@ internal val numberHint: Map<String, Int> = mapOf(
     "PK" to R.string.pakistan_hint,
     "PL" to R.string.poland_hint,
     "PM" to R.string.saint_pierre_hint,
-    "PN" to R.string.pitcairn,
+    "PN" to R.string.pitcairn_hint,
     "PR" to R.string.puerto_rico_hint,
     "PS" to R.string.state_of_palestine_hint,
     "PT" to R.string.portugal_hint,
@@ -231,11 +232,11 @@ internal val numberHint: Map<String, Int> = mapOf(
     "US" to R.string.united_states_america_hint,
     "UY" to R.string.uruguay_hint,
     "UZ" to R.string.uzbekistan_hint,
-    "VA" to R.string.holy_see,
+    "VA" to R.string.holy_see_hint,
     "VC" to R.string.saint_vincent_hint,
     "VE" to R.string.venezuela_hint,
     "VG" to R.string.virgin_islands_hint,
-    "VI" to R.string.virgin_islands_us,
+    "VI" to R.string.virgin_islands_us_hint,
     "VN" to R.string.vietnam_hint,
     "VU" to R.string.vanuatu_hint,
     "WF" to R.string.walli_and_fatuna_hint,

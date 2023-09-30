@@ -82,7 +82,7 @@ private const val TAG = "TogiCountryCodePicker"
 @Suppress("LongMethod")
 @Composable
 fun TogiCountryCodePicker(
-    onValueChange: (Pair<String, String>, Boolean) -> Unit,
+    onValueChange: (Pair<PhoneCode, String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
@@ -159,7 +159,7 @@ fun TogiCountryCodePicker(
         label = label,
         placeholder = {
             if (showPlaceholder) {
-                PlaceholderNumberHint(country.countryPhoneCode)
+                PlaceholderNumberHint(country.countryIso)
             }
         },
         leadingIcon = {
@@ -169,9 +169,9 @@ fun TogiCountryCodePicker(
                 onCountryChange = { countryData ->
                     country = countryData
                     isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = country.countryIso + phoneNumber,
+                        fullPhoneNumber = country.countryPhoneCode + phoneNumber,
                     )
-                    onValueChange(country.countryIso to phoneNumber, isNumberValid)
+                    onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
                 },
                 textColor = colors.textColor(enabled = enabled).value,
                 showCountryCode = showCountryCode,
@@ -184,7 +184,7 @@ fun TogiCountryCodePicker(
                     onClick = {
                         phoneNumber = ""
                         isNumberValid = false
-                        onValueChange(country.countryIso to phoneNumber, isNumberValid)
+                        onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
                     },
                 ) {
                     Icon(
@@ -198,7 +198,7 @@ fun TogiCountryCodePicker(
                             colors
                                 .trailingIconColor(enabled = true, isError = false)
                                 .value
-                       },
+                        },
                     )
                 }
             }

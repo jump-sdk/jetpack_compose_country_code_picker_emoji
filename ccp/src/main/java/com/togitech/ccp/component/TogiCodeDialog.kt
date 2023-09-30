@@ -96,28 +96,26 @@ private fun CodePickerRow(
     country: CountryData,
     textColor: Color,
     fontWeight: FontWeight = FontWeight.Medium,
+) = Row(
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = emojiCodeText(
-                showFlag = showFlag,
-                isPickCountry = country,
-                showCountryCode = showCountryCode,
-            ),
-            modifier = Modifier.padding(start = DEFAULT_PADDING),
-            fontStyle = MaterialTheme.typography.body1.fontStyle,
-            fontWeight = fontWeight,
-            color = textColor,
-        )
-        Icon(
-            imageVector = Icons.Default.ArrowDropDown,
-            contentDescription = null,
-            tint = textColor,
-        )
-    }
+    Text(
+        text = emojiCodeText(
+            showFlag = showFlag,
+            isPickCountry = country,
+            showCountryCode = showCountryCode,
+        ),
+        modifier = Modifier.padding(start = DEFAULT_PADDING),
+        fontStyle = MaterialTheme.typography.body1.fontStyle,
+        fontWeight = fontWeight,
+        color = textColor,
+    )
+    Icon(
+        imageVector = Icons.Default.ArrowDropDown,
+        contentDescription = null,
+        tint = textColor,
+    )
 }
 
 @Composable

@@ -7,9 +7,6 @@ plugins {
     id("app.cash.paparazzi") version libs.versions.paparazzi.get()
 }
 
-group "com.togitech"
-version "2.0.5"
-
 kotlin {
     jvmToolchain(17)
 }
@@ -81,7 +78,7 @@ afterEvaluate {
                 from(components.getByName("release"))
                 groupId = "com.togisoft"
                 artifactId = "jetpack_country_code_picker"
-                version = "2.0.5"
+                version = "2.2.0"
             }
         }
     }

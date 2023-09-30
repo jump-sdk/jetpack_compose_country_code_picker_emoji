@@ -1,8 +1,9 @@
 package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.R
+import com.togitech.ccp.data.Iso31661alpha2
 
-internal val countryNames: Map<String, Int> = mapOf(
+internal val countryNames: Map<Iso31661alpha2, Int> = mapOf(
     "AD" to R.string.andorra,
     "AE" to R.string.united_arab_emirates,
     "AF" to R.string.afghanistan,
