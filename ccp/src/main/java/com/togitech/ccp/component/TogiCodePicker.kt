@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
-import com.togitech.ccp.utils.sortedByLocalizedName
+import com.togitech.ccp.data.utils.sortedByLocalizedName
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 

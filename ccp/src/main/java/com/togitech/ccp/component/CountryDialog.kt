@@ -48,7 +48,7 @@ import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
 import com.togitech.ccp.data.utils.countryNames
-import com.togitech.ccp.utils.searchCountry
+import com.togitech.ccp.data.utils.searchCountry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 

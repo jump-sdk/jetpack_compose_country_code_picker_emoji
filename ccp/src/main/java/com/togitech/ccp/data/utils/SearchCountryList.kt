@@ -1,9 +1,8 @@
-package com.togitech.ccp.utils
+package com.togitech.ccp.data.utils
 
 import android.content.Context
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.countryNames
 
 internal fun List<CountryData>.searchCountry(key: String, context: Context): List<CountryData> =
     this.mapNotNull { countryData ->
