@@ -458,6 +458,7 @@ potential-bugs:
   ImplicitUnitReturnType:
     active: true
     allowExplicitReturnType: true
+    ignoreAnnotated: [ 'Composable' ]
   InvalidRange:
     active: true
   IteratorHasNextCallsNextMethod:
