@@ -67,7 +67,7 @@ internal fun TogiCodeDialog(
                 isOpenDialog = true
             },
     ) {
-        CodePickerRow(
+        CountryRow(
             showCountryCode = showCountryCode,
             showFlag = showFlag,
             country = country,
@@ -90,7 +90,7 @@ internal fun TogiCodeDialog(
 }
 
 @Composable
-private fun CodePickerRow(
+private fun CountryRow(
     showCountryCode: Boolean,
     showFlag: Boolean,
     country: CountryData,

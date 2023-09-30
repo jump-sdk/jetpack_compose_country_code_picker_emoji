@@ -1161,7 +1161,7 @@ compose:
   TopLevelComposableFunctions:
     active: true
   ComposableFunctionName:
-    active: true
+    active: false
   ConditionCouldBeLifted:
     active: true
     ignoreCallsWithArgumentNames: [ 'modifier', 'contentAlignment' ]
