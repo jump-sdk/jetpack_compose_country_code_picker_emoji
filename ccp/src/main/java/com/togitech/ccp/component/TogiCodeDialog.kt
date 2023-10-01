@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,11 +50,15 @@ internal fun TogiCodeDialog(
     var country by remember { mutableStateOf(selectedCountry) }
     var isOpenDialog by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
-    val allCountries = CountryData.entries.sortedByLocalizedName(context)
-    val countryList = includeOnly?.run {
-        val includeUppercase = map { it.uppercase() }
-        allCountries.filter { it.countryIso in includeUppercase }
-    } ?: allCountries
+    val countryList by remember(context, includeOnly) {
+        derivedStateOf {
+            val allCountries = CountryData.entries.sortedByLocalizedName(context)
+            includeOnly?.run {
+                val includeUppercase = map { it.uppercase() }
+                allCountries.filter { it.countryIso in includeUppercase }
+            } ?: allCountries
+        }
+    }
 
     Column(
         modifier = modifier
@@ -80,7 +85,7 @@ internal fun TogiCodeDialog(
                     country = countryItem
                     isOpenDialog = false
                 },
-                filteredCountryList = countryList.toImmutableList(),
+                countryList = countryList.toImmutableList(),
             )
         }
     }

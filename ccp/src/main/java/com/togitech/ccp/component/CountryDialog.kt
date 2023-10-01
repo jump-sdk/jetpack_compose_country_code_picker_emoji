@@ -25,8 +25,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -61,7 +63,7 @@ private val SEARCH_ICON_PADDING = 5.dp
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
  * @param onSelect Executes when the user selects a country from the list.
- * @param filteredCountryList The list of countries to display in the dialog.
+ * @param countryList The list of countries to display in the dialog.
  * @param modifier The modifier to be applied to the dialog surface.
  * @param rowPadding The padding to be applied to each row.
  * @param rowFontSize The font size to be applied to each row.
@@ -70,13 +72,25 @@ private val SEARCH_ICON_PADDING = 5.dp
 fun CountryDialog(
     onDismissRequest: () -> Unit,
     onSelect: (item: CountryData) -> Unit,
-    filteredCountryList: ImmutableList<CountryData>,
+    countryList: ImmutableList<CountryData>,
     modifier: Modifier = Modifier,
     rowPadding: Dp = DEFAULT_ROW_PADDING,
     rowFontSize: TextUnit = DEFAULT_ROW_FONT_SIZE,
 ) {
     val context = LocalContext.current
     var searchValue by rememberSaveable { mutableStateOf("") }
+    val filteredCountries by remember(context, searchValue) {
+        derivedStateOf {
+            if (searchValue.isEmpty()) {
+                countryList
+            } else {
+                countryList.searchCountry(
+                    searchValue,
+                    context,
+                )
+            }
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -106,16 +120,7 @@ fun CountryDialog(
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
                     Divider()
                     LazyColumn {
-                        items(
-                            if (searchValue.isEmpty()) {
-                                filteredCountryList
-                            } else {
-                                filteredCountryList.searchCountry(
-                                    searchValue,
-                                    context,
-                                )
-                            },
-                        ) { countryItem ->
+                        items(filteredCountries, key = { it.countryIso }) { countryItem ->
                             CountryRowItem(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
@@ -236,7 +241,7 @@ private fun SearchTextField(
 private fun CountryDialogPreview() {
     CountryDialog(
         onSelect = {},
-        filteredCountryList = CountryData.entries.toImmutableList(),
+        countryList = CountryData.entries.toImmutableList(),
         onDismissRequest = {},
         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
     )
