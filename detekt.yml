@@ -618,6 +618,8 @@ style:
     singleLine: never
   BracesOnWhenStatements:
     active: true
+    singleLine: consistent
+    multiLine: necessary
   MandatoryBracesLoops:
     active: true
   MaxChainedCallsOnSameLine:

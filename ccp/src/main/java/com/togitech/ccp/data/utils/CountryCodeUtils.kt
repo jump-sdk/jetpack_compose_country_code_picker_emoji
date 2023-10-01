@@ -13,8 +13,11 @@ internal fun getCountryFromPhoneCode(code: PhoneCode, context: Context): Country
     return when (countries.size) {
         0 -> null
         1 -> countries.firstOrNull()
-        else -> countries.firstOrNull { it.countryIso == getUserIsoCode(context) }
-            ?: if (code == "+1") CountryData.UnitedStates else countries.firstOrNull()
+        else -> {
+            val userIso = getUserIsoCode(context)
+            countries.firstOrNull { it.countryIso == userIso }
+                ?: if (code == "+1") CountryData.UnitedStates else countries.firstOrNull()
+        }
     }
 }
 
@@ -26,7 +29,9 @@ internal fun getUserIsoCode(context: Context): Iso31661alpha2 = try {
     null
 }.takeIf { !it.isNullOrBlank() } ?: context.resources.configuration.locale.country
 
-fun countryCodeToEmojiFlag(countryCode: String): String =
+val CountryData.emojiFlag: String get() = countryCodeToEmojiFlag(countryIso)
+
+fun countryCodeToEmojiFlag(countryCode: Iso31661alpha2): String =
     countryCode
         .uppercase()
         .map { char -> Character.codePointAt("$char", 0) + EMOJI_UNICODE }

@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
 import com.togitech.ccp.data.utils.countryNames
+import com.togitech.ccp.data.utils.emojiFlag
 import com.togitech.ccp.data.utils.searchCountry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -172,7 +172,7 @@ private fun CountryRowItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = countryCodeToEmojiFlag(countryItem.countryIso) + "  " +
+            text = countryItem.emojiFlag + "  " +
                 stringResource(
                     id = countryNames.getOrDefault(
                         countryItem.countryIso,

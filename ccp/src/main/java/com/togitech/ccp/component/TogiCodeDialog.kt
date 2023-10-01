@@ -25,15 +25,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
+import com.togitech.ccp.data.utils.emojiFlag
 import com.togitech.ccp.data.utils.sortedByLocalizedName
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 
-private val DEFAULT_PADDING = 10.dp
+internal val DEFAULT_PADDING = 10.dp
 
 @Composable
 internal fun TogiCodeDialog(
@@ -44,7 +43,6 @@ internal fun TogiCodeDialog(
     showCountryCode: Boolean,
     showFlag: Boolean,
     modifier: Modifier = Modifier,
-    padding: Dp = DEFAULT_PADDING,
 ) {
     val context = LocalContext.current
 
@@ -59,7 +57,6 @@ internal fun TogiCodeDialog(
 
     Column(
         modifier = modifier
-            .padding(padding)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -123,7 +120,7 @@ private fun emojiCodeText(
     showFlag: Boolean,
     isPickCountry: CountryData,
     showCountryCode: Boolean,
-) = (if (showFlag) countryCodeToEmojiFlag(isPickCountry.countryIso) else "") +
+) = (if (showFlag) isPickCountry.emojiFlag else "") +
     (if (showCountryCode && showFlag) "  " else "") +
     (if (showCountryCode) isPickCountry.countryPhoneCode else "")
 
