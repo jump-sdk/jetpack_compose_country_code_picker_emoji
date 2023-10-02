@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -30,7 +32,6 @@ import com.togitech.ccp.component.TogiCountryCodePicker
 import com.togitech.togii.ui.theme.TogiiTheme
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -74,12 +75,14 @@ fun CountryCodePick() {
         Spacer(modifier = Modifier.height(100.dp))
 
         TogiCountryCodePicker(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
             onValueChange = { (code, phone), isValid ->
                 Log.d("CCP", "onValueChange: $code $phone -> $isValid")
                 phoneNumber.value = phone
                 fullPhoneNumber.value = code + phone
                 isNumberValid = isValid
             },
+            label = { Text("Test Label") },
         )
         Spacer(modifier = Modifier.height(10.dp))
 

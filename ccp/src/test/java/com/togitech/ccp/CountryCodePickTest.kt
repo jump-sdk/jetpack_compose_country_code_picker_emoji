@@ -49,6 +49,7 @@ class CountryCodePickTest {
                         fullPhoneNumber.value = code + phone
                         isNumberValid = isValid
                     },
+                    initialCountryIsoCode = "US",
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 

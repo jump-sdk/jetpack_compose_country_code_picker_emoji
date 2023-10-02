@@ -478,6 +478,15 @@
     <string name="jamaica_hint" translatable="false">(876) 123-4567</string>
     <string name="iraq_hint" translatable="false">0777 123 4567</string>
     <string name="slovenia_hint" translatable="false">070 123 456</string>
+    <string name="holy_see_hint" translatable="false">06 698xxxxx</string>
+    <string name="virgin_islands_us_hint" translatable="false">(340) xxx-xxxx</string>
+    <string name="british_indian_ocean_hint" translatable="false">3xx xxxx</string>
+    <string name="isle_of_man_hint" translatable="false">xxxx xxxxxx</string>
+    <string name="iceland_hint" translatable="false">xxx xxxx</string>
+    <string name="kiribati_hint" translatable="false">xxxxxxxx</string>
+    <string name="liechtenstein_hint" translatable="false">xxx xxxx</string>
+    <string name="nicaragua_hint" translatable="false">xxxx xxxx</string>
+    <string name="pitcairn_hint" translatable="false">xxxxxxxx(x)</string>
     <string name="select_country">Select Country</string>
     <string name="invalid_number">Invalid Phone Number</string>
 </resources>
