@@ -17,7 +17,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -34,17 +33,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
@@ -57,7 +55,6 @@ import kotlinx.collections.immutable.toImmutableList
 internal val DEFAULT_ROUNDING = 10.dp
 private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
-private val DEFAULT_ROW_FONT_SIZE = 16.sp
 private val SEARCH_ICON_PADDING = 5.dp
 
 /**
@@ -66,7 +63,7 @@ private val SEARCH_ICON_PADDING = 5.dp
  * @param countryList The list of countries to display in the dialog.
  * @param modifier The modifier to be applied to the dialog surface.
  * @param rowPadding The padding to be applied to each row.
- * @param rowFontSize The font size to be applied to each row.
+ * @param textStyle A [TextStyle] for customizing text style of search input field and country rows.
  */
 @Composable
 fun CountryDialog(
@@ -75,7 +72,7 @@ fun CountryDialog(
     countryList: ImmutableList<CountryData>,
     modifier: Modifier = Modifier,
     rowPadding: Dp = DEFAULT_ROW_PADDING,
-    rowFontSize: TextUnit = DEFAULT_ROW_FONT_SIZE,
+    textStyle: TextStyle,
 ) {
     val context = LocalContext.current
     var searchValue by rememberSaveable { mutableStateOf("") }
@@ -101,17 +98,16 @@ fun CountryDialog(
                 modifier = modifier,
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    HeaderRow(onDismissRequest)
+                    HeaderRow(textStyle, onDismissRequest)
                     SearchTextField(
                         value = searchValue,
                         onValueChange = { searchValue = it },
-                        textColor = MaterialTheme.colors.onSurface,
-                        fontSize = DEFAULT_ROW_FONT_SIZE,
+                        textStyle = textStyle,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Filled.Search,
                                 contentDescription = stringResource(id = R.string.search),
-                                tint = MaterialTheme.colors.onSurface,
+                                tint = textStyle.color,
                                 modifier = Modifier.padding(horizontal = SEARCH_ICON_PADDING),
                             )
                         },
@@ -125,7 +121,7 @@ fun CountryDialog(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
                                 countryItem = countryItem,
-                                rowFontSize = rowFontSize,
+                                textStyle = textStyle,
                             )
                             Divider()
                         }
@@ -137,13 +133,15 @@ fun CountryDialog(
 }
 
 @Composable
-private fun HeaderRow(onDismissRequest: () -> Unit) {
+private fun HeaderRow(textStyle: TextStyle, onDismissRequest: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Spacer(modifier = Modifier.width(DEFAULT_ROW_PADDING))
         Text(
             text = stringResource(id = R.string.select_country),
-            style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.onSurface,
+            style = textStyle.copy(
+                fontSize = textStyle.fontSize.takeIf { it != TextUnit.Unspecified }?.let { it * 2 }
+                    ?: MaterialTheme.typography.h6.fontSize
+            ),
         )
         Spacer(modifier = Modifier.weight(1f))
         IconButton(
@@ -152,7 +150,7 @@ private fun HeaderRow(onDismissRequest: () -> Unit) {
             Icon(
                 imageVector = Icons.Filled.Clear,
                 contentDescription = "Close",
-                tint = MaterialTheme.colors.onSurface,
+                tint = textStyle.color,
             )
         }
     }
@@ -163,7 +161,7 @@ private fun CountryRowItem(
     rowPadding: Dp,
     onSelect: () -> Unit,
     countryItem: CountryData,
-    rowFontSize: TextUnit,
+    textStyle: TextStyle,
 ) {
     Row(
         Modifier
@@ -184,9 +182,7 @@ private fun CountryRowItem(
                         R.string.unknown,
                     ),
                 ),
-            color = MaterialTheme.colors.onSurface,
-            fontSize = rowFontSize,
-            fontFamily = FontFamily.SansSerif,
+            style = textStyle,
             overflow = TextOverflow.Ellipsis,
         )
     }
@@ -197,10 +193,9 @@ private fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.Black,
+    textStyle: TextStyle,
     leadingIcon: (@Composable () -> Unit)? = null,
     hint: String = stringResource(id = R.string.search),
-    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize,
 ) {
     BasicTextField(
         modifier = modifier
@@ -210,10 +205,7 @@ private fun SearchTextField(
         onValueChange = onValueChange,
         singleLine = true,
         cursorBrush = SolidColor(MaterialTheme.colors.primary),
-        textStyle = LocalTextStyle.current.copy(
-            color = textColor,
-            fontSize = fontSize,
-        ),
+        textStyle = textStyle,
         decorationBox = { innerTextField ->
             Row(
                 Modifier.fillMaxWidth(),
@@ -224,10 +216,7 @@ private fun SearchTextField(
                     Text(
                         text = hint,
                         maxLines = 1,
-                        style = LocalTextStyle.current.copy(
-                            color = textColor.copy(alpha = 0.5f),
-                            fontSize = fontSize,
-                        ),
+                        style = textStyle.copy(color = textStyle.color.copy(alpha = 0.5f)),
                     )
                 }
                 innerTextField()
@@ -240,9 +229,12 @@ private fun SearchTextField(
 @Composable
 private fun CountryDialogPreview() {
     CountryDialog(
+        onDismissRequest = {},
         onSelect = {},
         countryList = CountryData.entries.toImmutableList(),
-        onDismissRequest = {},
-        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(DEFAULT_ROUNDING)),
+        textStyle = TextStyle(),
     )
 }

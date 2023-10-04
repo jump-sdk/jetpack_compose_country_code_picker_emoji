@@ -69,14 +69,16 @@ private const val TAG = "TogiCountryCodePicker"
  * @param showCountryFlag Whether to show the country flag in the text field.
  * @param colors Colors to be used for the text field.
  * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
+ * Defaults to the United States.
  * @param showPlaceholder Whether to show the placeholder number in the text field.
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
  * @param initialCountryIsoCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
- * of the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
- * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
+ * of the initially selected country. This takes precedence over [initialCountryPhoneCode].
+ * @param initialCountryPhoneCode an optional Phone calling code of initially selected country.
+ * Note that if a valid initialCountryIsoCode is provided, this will be ignored.
  * @param label An optional composable to be used as a label for input field
  * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
  */
@@ -119,9 +121,11 @@ fun TogiCountryCodePicker(
         if (initialCountryPhoneCode?.startsWith("+") != true) {
             Log.e(TAG, "initialCountryPhoneCode must start with +")
         }
-        val initialCountry: CountryData? = initialCountryPhoneCode?.let {
+        val initialCountry: CountryData? = CountryData.entries.firstOrNull {
+            it.countryIso == initialCountryIsoCode
+        } ?: initialCountryPhoneCode?.let {
             getCountryFromPhoneCode(it, context)
-        } ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
+        }
         mutableStateOf(
             initialCountry ?: CountryData.isoMap[getUserIsoCode(context)] ?: fallbackCountry,
         )
@@ -178,9 +182,9 @@ fun TogiCountryCodePicker(
                     )
                     onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
                 },
-                textColor = colors.textColor(enabled = enabled).value,
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
+                textStyle = textStyle,
             )
         },
         trailingIcon = {
