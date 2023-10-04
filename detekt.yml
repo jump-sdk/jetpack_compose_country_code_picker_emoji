@@ -458,6 +458,7 @@ potential-bugs:
   ImplicitUnitReturnType:
     active: true
     allowExplicitReturnType: true
+    ignoreAnnotated: [ 'Composable' ]
   InvalidRange:
     active: true
   IteratorHasNextCallsNextMethod:
@@ -617,6 +618,8 @@ style:
     singleLine: never
   BracesOnWhenStatements:
     active: true
+    singleLine: consistent
+    multiLine: necessary
   MandatoryBracesLoops:
     active: true
   MaxChainedCallsOnSameLine:
@@ -1160,7 +1163,7 @@ compose:
   TopLevelComposableFunctions:
     active: true
   ComposableFunctionName:
-    active: true
+    active: false
   ConditionCouldBeLifted:
     active: true
     ignoreCallsWithArgumentNames: [ 'modifier', 'contentAlignment' ]

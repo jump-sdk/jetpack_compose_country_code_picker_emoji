@@ -1,6 +1,5 @@
 package com.togitech.ccp.component
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,8 +25,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,31 +48,49 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
 import com.togitech.ccp.data.utils.countryNames
-import com.togitech.ccp.data.utils.getLibCountries
-import com.togitech.ccp.utils.searchCountry
+import com.togitech.ccp.data.utils.emojiFlag
+import com.togitech.ccp.data.utils.searchCountry
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-private val DEFAULT_ROUNDING = 10.dp
+internal val DEFAULT_ROUNDING = 10.dp
 private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val DEFAULT_ROW_FONT_SIZE = 16.sp
 private val SEARCH_ICON_PADDING = 5.dp
 
-@Suppress("ModifierDefaultValue")
+/**
+ * @param onDismissRequest Executes when the user tries to dismiss the dialog.
+ * @param onSelect Executes when the user selects a country from the list.
+ * @param countryList The list of countries to display in the dialog.
+ * @param modifier The modifier to be applied to the dialog surface.
+ * @param rowPadding The padding to be applied to each row.
+ * @param rowFontSize The font size to be applied to each row.
+ */
 @Composable
-internal fun CountryDialog(
+fun CountryDialog(
     onDismissRequest: () -> Unit,
     onSelect: (item: CountryData) -> Unit,
-    filteredCountryList: ImmutableList<CountryData>,
-    context: Context,
-    modifier: Modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
+    countryList: ImmutableList<CountryData>,
+    modifier: Modifier = Modifier,
     rowPadding: Dp = DEFAULT_ROW_PADDING,
     rowFontSize: TextUnit = DEFAULT_ROW_FONT_SIZE,
 ) {
+    val context = LocalContext.current
     var searchValue by rememberSaveable { mutableStateOf("") }
+    val filteredCountries by remember(context, searchValue) {
+        derivedStateOf {
+            if (searchValue.isEmpty()) {
+                countryList
+            } else {
+                countryList.searchCountry(
+                    searchValue,
+                    context,
+                )
+            }
+        }
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -101,16 +120,7 @@ internal fun CountryDialog(
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
                     Divider()
                     LazyColumn {
-                        items(
-                            if (searchValue.isEmpty()) {
-                                filteredCountryList
-                            } else {
-                                filteredCountryList.searchCountry(
-                                    searchValue,
-                                    context,
-                                )
-                            },
-                        ) { countryItem ->
+                        items(filteredCountries, key = { it.countryIso }) { countryItem ->
                             CountryRowItem(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
@@ -167,10 +177,10 @@ private fun CountryRowItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = countryCodeToEmojiFlag(countryItem.countryCode) + "  " +
+            text = countryItem.emojiFlag + "  " +
                 stringResource(
                     id = countryNames.getOrDefault(
-                        countryItem.countryCode.lowercase(),
+                        countryItem.countryIso,
                         R.string.unknown,
                     ),
                 ),
@@ -231,8 +241,8 @@ private fun SearchTextField(
 private fun CountryDialogPreview() {
     CountryDialog(
         onSelect = {},
-        context = LocalContext.current,
-        filteredCountryList = getLibCountries.toImmutableList(),
+        countryList = CountryData.entries.toImmutableList(),
         onDismissRequest = {},
+        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
     )
 }
