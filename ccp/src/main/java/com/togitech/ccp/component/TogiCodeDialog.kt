@@ -42,8 +42,8 @@ internal fun TogiCodeDialog(
     onCountryChange: (CountryData) -> Unit,
     showCountryCode: Boolean,
     showFlag: Boolean,
-    modifier: Modifier = Modifier,
     textStyle: TextStyle,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 

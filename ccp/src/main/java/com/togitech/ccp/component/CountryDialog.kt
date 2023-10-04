@@ -50,6 +50,7 @@ import com.togitech.ccp.data.utils.countryNames
 import com.togitech.ccp.data.utils.emojiFlag
 import com.togitech.ccp.data.utils.searchCountry
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 internal val DEFAULT_ROUNDING = 10.dp
@@ -61,20 +62,20 @@ private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
  * @param onSelect Executes when the user selects a country from the list.
- * @param countryList The list of countries to display in the dialog.
- * @param modifier The modifier to be applied to the dialog surface.
- * @param rowPadding The padding to be applied to each row.
  * @param textStyle A [TextStyle] for customizing text style of search input field and country rows.
+ * @param modifier The modifier to be applied to the dialog surface.
+ * @param countryList The list of countries to display in the dialog.
+ * @param rowPadding The padding to be applied to each row.
  * @param backgroundColor The [Color] of the dialog background.
  */
 @Composable
 fun CountryDialog(
     onDismissRequest: () -> Unit,
     onSelect: (item: CountryData) -> Unit,
-    countryList: ImmutableList<CountryData>,
-    modifier: Modifier = Modifier,
-    rowPadding: Dp = DEFAULT_ROW_PADDING,
     textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+    countryList: ImmutableList<CountryData> = persistentListOf(),
+    rowPadding: Dp = DEFAULT_ROW_PADDING,
     backgroundColor: Color = MaterialTheme.colors.surface,
 ) {
     val context = LocalContext.current
@@ -198,8 +199,8 @@ private fun CountryRowItem(
 private fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     textStyle: TextStyle,
+    modifier: Modifier = Modifier,
     leadingIcon: (@Composable () -> Unit)? = null,
     hint: String = stringResource(id = R.string.search),
 ) {
