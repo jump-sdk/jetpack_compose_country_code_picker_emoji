@@ -58,8 +58,9 @@ Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.git
 | clearIcon                | The icon to be used for the clear button. Set to null to disable the clear button.                                                                                                                     |
 | initialPhoneNumber       | An optional phone number to be initial value of the input field.                                                                                                                                       |
 | initialCountryCode       | An optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code) of the initially selected country.                                                                             |
-| initialCountryPhoneCode  | An optional Phone calling code of initially selected country.
-| label                    | An optional composable to be used as a label for input field.                                                                                                                                          |
+| initialCountryPhoneCode  | An optional Phone calling code of initially selected country.                                                                                                                                          |
+| label                    | An optional composable to be used as a label for input field.                                                                                                                                          |                  
+| textStyle                | An optional [TextStyle] for customizing text style of phone number input field.                                                                                                                        |
 
 
 

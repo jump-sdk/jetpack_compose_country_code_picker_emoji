@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,7 +78,7 @@ private const val TAG = "TogiCountryCodePicker"
  * of the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
  * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
  * @param label An optional composable to be used as a label for input field
-
+ * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -98,6 +99,7 @@ fun TogiCountryCodePicker(
     initialCountryIsoCode: Iso31661alpha2? = null,
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
+    textStyle: TextStyle = TextStyle(),
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -157,6 +159,7 @@ fun TogiCountryCodePicker(
             )
             .focusRequester(focusRequester = focusRequester),
         enabled = enabled,
+        textStyle = textStyle,
         label = label,
         placeholder = {
             if (showPlaceholder) {
