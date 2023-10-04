@@ -33,11 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -56,6 +56,7 @@ internal val DEFAULT_ROUNDING = 10.dp
 private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val SEARCH_ICON_PADDING = 5.dp
+private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
 
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
@@ -64,6 +65,7 @@ private val SEARCH_ICON_PADDING = 5.dp
  * @param modifier The modifier to be applied to the dialog surface.
  * @param rowPadding The padding to be applied to each row.
  * @param textStyle A [TextStyle] for customizing text style of search input field and country rows.
+ * @param backgroundColor The [Color] of the dialog background.
  */
 @Composable
 fun CountryDialog(
@@ -73,6 +75,7 @@ fun CountryDialog(
     modifier: Modifier = Modifier,
     rowPadding: Dp = DEFAULT_ROW_PADDING,
     textStyle: TextStyle,
+    backgroundColor: Color = MaterialTheme.colors.surface,
 ) {
     val context = LocalContext.current
     var searchValue by rememberSaveable { mutableStateOf("") }
@@ -94,7 +97,7 @@ fun CountryDialog(
         content = {
             @Suppress("ReusedModifierInstance")
             Surface(
-                color = MaterialTheme.colors.surface,
+                color = backgroundColor,
                 modifier = modifier,
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -139,8 +142,11 @@ private fun HeaderRow(textStyle: TextStyle, onDismissRequest: () -> Unit) {
         Text(
             text = stringResource(id = R.string.select_country),
             style = textStyle.copy(
-                fontSize = textStyle.fontSize.takeIf { it != TextUnit.Unspecified }?.let { it * 2 }
-                    ?: MaterialTheme.typography.h6.fontSize
+                fontSize = textStyle
+                    .fontSize
+                    .takeIf { it != TextUnit.Unspecified }
+                    ?.let { it * HEADER_TEXT_SIZE_MULTIPLE }
+                    ?: MaterialTheme.typography.h6.fontSize,
             ),
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -204,7 +210,7 @@ private fun SearchTextField(
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colors.primary),
+        cursorBrush = SolidColor(textStyle.color),
         textStyle = textStyle,
         decorationBox = { innerTextField ->
             Row(
