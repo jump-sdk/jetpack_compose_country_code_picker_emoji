@@ -76,10 +76,10 @@ private const val TAG = "TogiCountryCodePicker"
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
- * @param initialCountryIsoCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
- * of the initially selected country. This takes precedence over [initialCountryPhoneCode].
- * @param initialCountryPhoneCode an optional Phone calling code of initially selected country.
- * Note that if a valid initialCountryIsoCode is provided, this will be ignored.
+ * @param initialCountryIsoCode Optional ISO-3166-1 alpha-2 country code to set the initially selected country.
+ * Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
+ * @param initialCountryPhoneCode Optional country phone code to set the initially selected country.
+ * This takes precedence over [initialCountryIsoCode].
  * @param label An optional composable to be used as a label for input field
  * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
  */
@@ -122,13 +122,11 @@ fun TogiCountryCodePicker(
         if (initialCountryPhoneCode?.startsWith("+") != true) {
             Log.e(TAG, "initialCountryPhoneCode must start with +")
         }
-        val initialCountry: CountryData? = CountryData.entries.firstOrNull {
-            it.countryIso == initialCountryIsoCode
-        } ?: initialCountryPhoneCode?.let {
-            getCountryFromPhoneCode(it, context)
-        }
         mutableStateOf(
-            initialCountry ?: CountryData.isoMap[getUserIsoCode(context)] ?: fallbackCountry,
+            initialCountryPhoneCode?.let { getCountryFromPhoneCode(it, context) }
+                ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
+                ?: CountryData.isoMap[getUserIsoCode(context)]
+                ?: fallbackCountry,
         )
     }
 
