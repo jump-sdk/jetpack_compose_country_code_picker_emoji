@@ -101,6 +101,7 @@ fun TogiCountryCodePicker(
     label: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = TextStyle(),
     keyboardOptions: KeyboardOptions? = null,
+    keyboardActions: KeyboardActions? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -216,7 +217,7 @@ fun TogiCountryCodePicker(
                 autoCorrect = true,
                 imeAction = ImeAction.Done,
             ),
-        keyboardActions = KeyboardActions(
+        keyboardActions = keyboardActions?: KeyboardActions(
             onDone = {
                 keyboardController?.hide()
                 focusRequester.freeFocus()
