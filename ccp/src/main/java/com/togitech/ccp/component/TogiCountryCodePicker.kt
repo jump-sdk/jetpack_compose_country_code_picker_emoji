@@ -100,6 +100,7 @@ fun TogiCountryCodePicker(
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = TextStyle(),
+    keyboardOptions: KeyboardOptions? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -210,11 +211,11 @@ fun TogiCountryCodePicker(
         },
         isError = !isNumberValid,
         visualTransformation = phoneNumberTransformation,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Phone,
-            autoCorrect = true,
-            imeAction = ImeAction.Done,
-        ),
+        keyboardOptions = keyboardOptions ?: KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Phone,
+                autoCorrect = true,
+                imeAction = ImeAction.Done,
+            ),
         keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
