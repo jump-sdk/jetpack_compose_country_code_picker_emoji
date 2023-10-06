@@ -157,7 +157,13 @@ fun TogiCountryCodePicker(
             .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
-                onFill = { phoneNumber = it },
+                onFill = {
+                    phoneNumber = phoneNumberTransformation.preFilter(it)
+                    isNumberValid = validatePhoneNumber(
+                        fullPhoneNumber = country.countryPhoneCode + phoneNumber,
+                    )
+                    onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
+                },
                 focusRequester = focusRequester,
             )
             .focusRequester(focusRequester = focusRequester),
