@@ -83,6 +83,7 @@ fun CountryCodePick() {
                 isNumberValid = isValid
             },
             label = { Text("Test Label") },
+            textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onSurface)
         )
         Spacer(modifier = Modifier.height(10.dp))
 
