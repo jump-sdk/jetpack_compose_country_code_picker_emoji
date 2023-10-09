@@ -113,7 +113,7 @@ fun TogiCountryCodePicker(
             TextFieldValue(
                 text = initialPhoneNumber.orEmpty(),
                 selection = TextRange(initialPhoneNumber?.length ?: 0),
-            )
+            ),
         )
     }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -153,8 +153,10 @@ fun TogiCountryCodePicker(
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
-            val prefilteredPhoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber.text)
-            phoneNumber = TextFieldValue(prefilteredPhoneNumber, TextRange(prefilteredPhoneNumber.length))
+            val prefilteredPhoneNumber =
+                phoneNumberTransformation.preFilter(enteredPhoneNumber.text)
+            phoneNumber =
+                TextFieldValue(prefilteredPhoneNumber, TextRange(prefilteredPhoneNumber.length))
             isNumberValid = validatePhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             )
@@ -165,9 +167,13 @@ fun TogiCountryCodePicker(
             .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
-                onFill = {filledPhoneNumber ->
-                    val prefilteredPhoneNumber = phoneNumberTransformation.preFilter(filledPhoneNumber)
-                    phoneNumber = TextFieldValue(prefilteredPhoneNumber, TextRange(prefilteredPhoneNumber.length))
+                onFill = { filledPhoneNumber ->
+                    val prefilteredPhoneNumber =
+                        phoneNumberTransformation.preFilter(filledPhoneNumber)
+                    phoneNumber = TextFieldValue(
+                        prefilteredPhoneNumber,
+                        TextRange(prefilteredPhoneNumber.length),
+                    )
                     isNumberValid = validatePhoneNumber(
                         fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
                     )
