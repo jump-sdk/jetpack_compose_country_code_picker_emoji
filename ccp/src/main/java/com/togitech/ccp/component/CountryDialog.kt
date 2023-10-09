@@ -62,6 +62,7 @@ private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val SEARCH_ICON_PADDING = 5.dp
 private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
+private val MIN_TAP_DIMENSION = 48.dp
 
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
@@ -119,19 +120,18 @@ fun CountryDialog(
                                 modifier = Modifier.padding(horizontal = SEARCH_ICON_PADDING),
                             )
                         },
-                        modifier = Modifier.padding(DEFAULT_ROW_PADDING),
+                        modifier = Modifier.padding(horizontal = DEFAULT_ROW_PADDING),
                     )
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
-                    Divider()
                     LazyColumn {
                         items(filteredCountries, key = { it.countryIso }) { countryItem ->
+                            Divider()
                             CountryRowItem(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
                                 countryItem = countryItem,
                                 textStyle = textStyle,
                             )
-                            Divider()
                         }
                     }
                 }
@@ -217,7 +217,8 @@ private fun SearchTextField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .focusRequester(requester),
+            .focusRequester(requester)
+            .height(MIN_TAP_DIMENSION),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
