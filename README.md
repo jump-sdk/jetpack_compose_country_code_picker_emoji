@@ -65,7 +65,7 @@ Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.git
 | initialCountryIsoCode   | Optional ISO-3166-1 alpha-2 country code to set the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.                                                                                            |
 | initialCountryPhoneCode | Optional country phone code to set the initially selected country. This takes precedence over initialCountryIsoCode.                                                                                                                                       |
 | label                   | An optional composable to be used as a label for input field.                                                                                                                                                                                              |                  
-| textStyle               | An optional [TextStyle](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle) for customizing text style of phone number input field.                                                                                         |
+| textStyle               | An optional [TextStyle](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle) for customizing text style of phone number input field. Defaults to MaterialTheme.typography.body1                                              |
 
 
 

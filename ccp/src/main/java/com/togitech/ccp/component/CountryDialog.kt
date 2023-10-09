@@ -120,7 +120,6 @@ fun CountryDialog(
                                 modifier = Modifier.padding(horizontal = SEARCH_ICON_PADDING),
                             )
                         },
-                        modifier = Modifier.padding(horizontal = DEFAULT_ROW_PADDING),
                     )
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
                     LazyColumn {
@@ -204,7 +203,6 @@ private fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier,
     leadingIcon: (@Composable () -> Unit)? = null,
     hint: String = stringResource(id = R.string.search),
 ) {
@@ -215,10 +213,11 @@ private fun SearchTextField(
     }
 
     BasicTextField(
-        modifier = modifier
+        modifier = Modifier
+            .padding(horizontal = DEFAULT_ROW_PADDING)
+            .height(MIN_TAP_DIMENSION)
             .fillMaxWidth()
-            .focusRequester(requester)
-            .height(MIN_TAP_DIMENSION),
+            .focusRequester(requester),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
@@ -226,8 +225,7 @@ private fun SearchTextField(
         textStyle = textStyle,
         decorationBox = { innerTextField ->
             Row(
-                Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 leadingIcon?.invoke()
