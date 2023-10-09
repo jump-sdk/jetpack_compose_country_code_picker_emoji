@@ -62,6 +62,7 @@ private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val SEARCH_ICON_PADDING = 5.dp
 private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
+private val MIN_TAP_DIMENSION = 48.dp
 
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
@@ -210,16 +211,13 @@ private fun SearchTextField(
 ) {
     val requester = remember { FocusRequester() }
 
-    LaunchedEffect(
-        key1 = Unit,
-        block = {
-            requester.requestFocus()
-        },
-    )
+    LaunchedEffect(Unit) {
+        requester.requestFocus()
+    }
 
     BasicTextField(
         modifier = modifier
-            .height(48.dp)
+            .height(MIN_TAP_DIMENSION)
             .fillMaxWidth()
             .focusRequester(requester),
         value = value,
@@ -231,13 +229,13 @@ private fun SearchTextField(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(MIN_TAP_DIMENSION),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (leadingIcon != null) leadingIcon()
                 Box(
                     modifier = Modifier
-                        .padding(start = 8.dp)
+                        .padding(start = DEFAULT_ROUNDING)
                         .weight(1f),
                     contentAlignment = Alignment.CenterStart,
                 ) {
