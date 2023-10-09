@@ -5,6 +5,7 @@ import android.telephony.PhoneNumberUtils
 import android.text.Selection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
@@ -17,6 +18,8 @@ class PhoneNumberTransformation(countryCode: String, context: Context) : VisualT
     }
 
     fun preFilter(text: String): String = text.filter { PhoneNumberUtils.isReallyDialable(it) }
+
+    fun preFilter(textValue: TextFieldValue) = preFilter(textValue.text)
 
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation = reformat(text, Selection.getSelectionEnd(text))

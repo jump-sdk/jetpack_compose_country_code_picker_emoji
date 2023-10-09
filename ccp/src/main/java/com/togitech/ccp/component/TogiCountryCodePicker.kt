@@ -83,7 +83,8 @@ private const val TAG = "TogiCountryCodePicker"
  * @param initialCountryPhoneCode Optional country phone code to set the initially selected country.
  * This takes precedence over [initialCountryIsoCode].
  * @param label An optional composable to be used as a label for input field
- * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
+ * @param textStyle An optional [TextStyle] for customizing text style of phone number input field.
+ * Defaults to MaterialTheme.typography.body1
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -126,7 +127,7 @@ fun TogiCountryCodePicker(
         if (initialPhoneNumber?.startsWith("+") == true) {
             Log.e(TAG, "initialPhoneNumber must not include the country code")
         }
-        if (initialCountryPhoneCode?.startsWith("+") != true) {
+        if (initialCountryPhoneCode?.startsWith("+")?.not() == true) {
             Log.e(TAG, "initialCountryPhoneCode must start with +")
         }
         mutableStateOf(
@@ -153,10 +154,11 @@ fun TogiCountryCodePicker(
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
-            val prefilteredPhoneNumber =
-                phoneNumberTransformation.preFilter(enteredPhoneNumber.text)
-            phoneNumber =
-                TextFieldValue(prefilteredPhoneNumber, TextRange(prefilteredPhoneNumber.length))
+            val preFilteredPhoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
+            phoneNumber = TextFieldValue(
+                text = preFilteredPhoneNumber,
+                selection = TextRange(preFilteredPhoneNumber.length),
+            )
             isNumberValid = validatePhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             )
@@ -168,11 +170,11 @@ fun TogiCountryCodePicker(
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
                 onFill = { filledPhoneNumber ->
-                    val prefilteredPhoneNumber =
+                    val preFilteredPhoneNumber =
                         phoneNumberTransformation.preFilter(filledPhoneNumber)
                     phoneNumber = TextFieldValue(
-                        prefilteredPhoneNumber,
-                        TextRange(prefilteredPhoneNumber.length),
+                        text = preFilteredPhoneNumber,
+                        selection = TextRange(preFilteredPhoneNumber.length),
                     )
                     isNumberValid = validatePhoneNumber(
                         fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
