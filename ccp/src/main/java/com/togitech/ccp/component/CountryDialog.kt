@@ -120,19 +120,17 @@ fun CountryDialog(
                                 modifier = Modifier.padding(horizontal = SEARCH_ICON_PADDING),
                             )
                         },
-                        modifier = Modifier.padding(DEFAULT_ROW_PADDING),
                     )
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
-                    Divider()
                     LazyColumn {
                         items(filteredCountries, key = { it.countryIso }) { countryItem ->
+                            Divider()
                             CountryRowItem(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
                                 countryItem = countryItem,
                                 textStyle = textStyle,
                             )
-                            Divider()
                         }
                     }
                 }
@@ -205,7 +203,6 @@ private fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier,
     leadingIcon: (@Composable () -> Unit)? = null,
     hint: String = stringResource(id = R.string.search),
 ) {
@@ -216,7 +213,8 @@ private fun SearchTextField(
     }
 
     BasicTextField(
-        modifier = modifier
+        modifier = Modifier
+            .padding(horizontal = DEFAULT_ROW_PADDING)
             .height(MIN_TAP_DIMENSION)
             .fillMaxWidth()
             .focusRequester(requester),
@@ -227,12 +225,10 @@ private fun SearchTextField(
         textStyle = textStyle,
         decorationBox = { innerTextField ->
             Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(MIN_TAP_DIMENSION),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (leadingIcon != null) leadingIcon()
+                leadingIcon?.invoke()
                 Box(
                     modifier = Modifier
                         .padding(start = DEFAULT_ROUNDING)
