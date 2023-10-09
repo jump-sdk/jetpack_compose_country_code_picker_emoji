@@ -157,8 +157,8 @@ fun TogiCountryCodePicker(
             .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
-                onFill = {
-                    phoneNumber = phoneNumberTransformation.preFilter(it)
+                onFill = { filledPhoneNumber ->
+                    phoneNumber = phoneNumberTransformation.preFilter(filledPhoneNumber)
                     isNumberValid = validatePhoneNumber(
                         fullPhoneNumber = country.countryPhoneCode + phoneNumber,
                     )
