@@ -104,7 +104,7 @@ fun TogiCountryCodePicker(
     initialCountryIsoCode: Iso31661alpha2? = null,
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
-    textStyle: TextStyle = MaterialTheme.typography.body1,
+    textStyle: TextStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onSurface),
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }

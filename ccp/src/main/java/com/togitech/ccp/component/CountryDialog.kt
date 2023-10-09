@@ -2,6 +2,7 @@ package com.togitech.ccp.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +35,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
@@ -58,6 +62,7 @@ private val DEFAULT_ROW_PADDING = 16.dp
 private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val SEARCH_ICON_PADDING = 5.dp
 private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
+private val MIN_TAP_DIMENSION = 48.dp
 
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
@@ -204,10 +209,17 @@ private fun SearchTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     hint: String = stringResource(id = R.string.search),
 ) {
+    val requester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        requester.requestFocus()
+    }
+
     BasicTextField(
         modifier = modifier
+            .height(MIN_TAP_DIMENSION)
             .fillMaxWidth()
-            .padding(horizontal = DEFAULT_ROW_PADDING),
+            .focusRequester(requester),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
@@ -215,18 +227,27 @@ private fun SearchTextField(
         textStyle = textStyle,
         decorationBox = { innerTextField ->
             Row(
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .height(MIN_TAP_DIMENSION),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (leadingIcon != null) leadingIcon()
-                if (value.isEmpty()) {
-                    Text(
-                        text = hint,
-                        maxLines = 1,
-                        style = textStyle.copy(color = textStyle.color.copy(alpha = 0.5f)),
-                    )
+                Box(
+                    modifier = Modifier
+                        .padding(start = DEFAULT_ROUNDING)
+                        .weight(1f),
+                    contentAlignment = Alignment.CenterStart,
+                ) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = hint,
+                            maxLines = 1,
+                            style = textStyle.copy(color = textStyle.color.copy(alpha = 0.5f)),
+                        )
+                    }
+                    innerTextField()
                 }
-                innerTextField()
             }
         },
     )
