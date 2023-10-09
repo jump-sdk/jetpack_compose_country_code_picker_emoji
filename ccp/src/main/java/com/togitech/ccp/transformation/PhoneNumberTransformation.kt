@@ -19,7 +19,7 @@ class PhoneNumberTransformation(countryCode: String, context: Context) : VisualT
 
     fun preFilter(text: String): String = text.filter { PhoneNumberUtils.isReallyDialable(it) }
 
-    fun preFilter(textValue: TextFieldValue) = preFilter(textValue.text)
+    fun preFilter(textValue: TextFieldValue): String = preFilter(textValue.text)
 
     override fun filter(text: AnnotatedString): TransformedText {
         val transformation = reformat(text, Selection.getSelectionEnd(text))

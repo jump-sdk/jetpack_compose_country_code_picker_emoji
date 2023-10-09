@@ -127,7 +127,7 @@ fun TogiCountryCodePicker(
         if (initialPhoneNumber?.startsWith("+") == true) {
             Log.e(TAG, "initialPhoneNumber must not include the country code")
         }
-        if (initialCountryPhoneCode?.startsWith("+")?.not() == true) {
+        if (initialCountryPhoneCode?.run { !startsWith("+") } == true) {
             Log.e(TAG, "initialCountryPhoneCode must start with +")
         }
         mutableStateOf(
