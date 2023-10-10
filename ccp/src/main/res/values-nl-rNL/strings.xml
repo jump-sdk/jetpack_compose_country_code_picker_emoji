@@ -245,6 +245,6 @@
     <string name="zimbabwe">Zimbabwe</string>
     <string name="unknown">Onbekend</string>
     <string name="search">Zoekopdracht...</string>
-    <string name="select_country">Select Country</string>
-    <string name="invalid_number">Invalid Phone Number</string>
+    <string name="select_country">Velg land</string>
+    <string name="invalid_number">Ugyldig telefonnummer</string>
 </resources>
