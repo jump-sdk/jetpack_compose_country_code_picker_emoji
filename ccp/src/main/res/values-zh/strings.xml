@@ -237,14 +237,14 @@
     <string name="vanuatu">瓦努阿图</string>
     <string name="venezuela">委内瑞拉</string>
     <string name="vietnam">越南</string>
-    <string name="virgin_islands_us">美属维京群岛</string>
     <string name="virgin_islands">英属维京群岛</string>
+    <string name="virgin_islands_us">美属维京群岛</string>
     <string name="wallis_and_futuna">瓦利斯和富图纳</string>
     <string name="yemen">也门</string>
     <string name="zambia">赞比亚</string>
     <string name="zimbabwe">津巴布韦</string>
     <string name="unknown">未知</string>
-    <string name="search">搜索...</string>
+    <string name="search">搜索</string>
     <string name="select_country">选择国家</string>
     <string name="invalid_number">无效的电话号码</string>
 </resources>
