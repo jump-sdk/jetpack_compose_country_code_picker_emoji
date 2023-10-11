@@ -184,7 +184,7 @@ fun TogiCountryCodePicker(
                     try {
                         focusRequester.freeFocus()
                     } catch (exception: IllegalStateException) {
-                        Log.e(TAG, "Unable to free focus ${exception.stackTrace}")
+                        Log.e(TAG, "Unable to free focus", exception)
                     }
                 },
                 focusRequester = focusRequester,
