@@ -244,7 +244,7 @@
     <string name="zambia">Zambiya </string>
     <string name="zimbabwe">Zimbabve </string>
     <string name="unknown">Bilinmiyor</string>
-    <string name="search">Ara…</string>
+    <string name="search">Ara\u2026</string>
     <string name="select_country">Ülke Seçiniz</string>
     <string name="invalid_number">Hatalı Telefon Numarası</string>
 

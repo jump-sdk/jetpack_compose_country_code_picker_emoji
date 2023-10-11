@@ -244,7 +244,7 @@
     <string name="zambia">Zambia</string>
     <string name="zimbabwe">Zimbabwe </string>
     <string name="unknown">Sconosciuto</string>
-    <string name="search">Ricerca…</string>
+    <string name="search">Ricerca\u2026</string>
     <string name="select_country">Seleziona il paese</string>
     <string name="invalid_number">Numero di telefono sbagliato</string>
 

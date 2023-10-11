@@ -244,7 +244,7 @@
     <string name="zambia">जाम्बिया</string>
     <string name="zimbabwe">ज़िम्बाब्वे</string>
     <string name="unknown">अज्ञात</string>
-    <string name="search">खोजें…</string>
+    <string name="search">खोजें\u2026</string>
     <string name="select_country">देश चुनें</string>
     <string name="invalid_number">अवैध फोन नंबर</string>
 </resources>

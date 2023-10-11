@@ -244,7 +244,7 @@
     <string name="zambia">Zambiya</string>
     <string name="zimbabwe">Simbabwe</string>
     <string name="unknown">Aan la garanayn</string>
-    <string name="search">Raadi…</string>
+    <string name="search">Raadi\u2026</string>
     <string name="select_country">Xulo waddanka</string>
     <string name="invalid_number">Lambarka Taleefanka aan sax ahayn</string>
 </resources>
