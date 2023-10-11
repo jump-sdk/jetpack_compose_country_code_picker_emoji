@@ -189,7 +189,11 @@ fun TogiCountryCodePicker(
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
                     coroutineScope.launch {
-                        focusRequester.freeFocus()
+                        try {
+                            focusRequester.freeFocus()
+                        } catch (exception: IllegalStateException) {
+                            Log.e(TAG, "Unable to free focus", exception)
+                        }
                     }
                 },
                 focusRequester = focusRequester,
@@ -256,7 +260,11 @@ fun TogiCountryCodePicker(
             onDone = {
                 keyboardController?.hide()
                 coroutineScope.launch {
-                    focusRequester.freeFocus()
+                    try {
+                        focusRequester.freeFocus()
+                    } catch (exception: IllegalStateException) {
+                        Log.e(TAG, "Unable to free focus", exception)
+                    }
                 }
             },
         ),
