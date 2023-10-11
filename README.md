@@ -93,7 +93,7 @@ repositories {
 }
 ```
 
-Step 2. Add the dependency
+Step 2. Add the dependency - n.b. this currently does not support Material 3.
 
 ```kotlin 
 dependencies {

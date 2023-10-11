@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
     id("io.gitlab.arturbosch.detekt") version libs.versions.detekt.get()
     id("org.jetbrains.dokka")
-    id("app.cash.paparazzi") version libs.versions.paparazzi.get()
+    alias(libs.plugins.paparazzi)
 }
 
 kotlin {
@@ -16,8 +16,7 @@ android {
     namespace = "com.togitech.ccp"
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -33,7 +32,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_17.toString()
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
@@ -67,7 +66,7 @@ dependencies {
 }
 
 detekt {
-    config = files(project.rootProject.file("detekt.yml"))
+    config.setFrom(project.rootProject.file("detekt.yml"))
     allRules = true
 }
 

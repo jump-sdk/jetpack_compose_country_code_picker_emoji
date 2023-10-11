@@ -3,6 +3,11 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven("https://oss.sonatype.org/content/repositories/snapshots/") {
+            content {
+                includeGroup("app.cash.paparazzi")
+            }
+        }
     }
 }
 dependencyResolutionManagement {
@@ -16,6 +21,11 @@ dependencyResolutionManagement {
             }
         }
         maven("https://androidx.dev/storage/compose-compiler/repository/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/") {
+            content {
+                includeGroup("app.cash.paparazzi")
+            }
+        }
     }
 }
 rootProject.name = "CountryCodePicker"

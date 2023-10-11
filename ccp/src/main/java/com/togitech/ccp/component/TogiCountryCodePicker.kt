@@ -16,7 +16,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,18 +24,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.autofill.AutofillType
-import androidx.compose.ui.composed
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalAutofill
-import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -91,7 +83,7 @@ private const val TAG = "TogiCountryCodePicker"
  * @param [keyboardActions] An optional [KeyboardActions] to customize keyboard actions.
  */
 @OptIn(ExperimentalComposeUiApi::class)
-@Suppress("LongMethod", "CyclomaticComplexMethod")
+@Suppress("LongMethod")
 @Composable
 fun TogiCountryCodePicker(
     onValueChange: (Pair<PhoneCode, String>, Boolean) -> Unit,
@@ -192,7 +184,7 @@ fun TogiCountryCodePicker(
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
                     coroutineScope.launch {
-                        freeFocus(focusRequester)
+                        focusRequester.safeFreeFocus()
                     }
                 },
                 focusRequester = focusRequester,
@@ -223,27 +215,15 @@ fun TogiCountryCodePicker(
             )
         },
         trailingIcon = {
-            clearIcon?.let {
-                IconButton(
-                    onClick = {
-                        phoneNumber = TextFieldValue("")
-                        isNumberValid = false
-                        onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
-                    },
+            if (clearIcon != null) {
+                ClearIconButton(
+                    imageVector = clearIcon,
+                    colors = colors,
+                    isNumberValid = isNumberValid,
                 ) {
-                    Icon(
-                        imageVector = it,
-                        contentDescription = "Clear",
-                        tint = if (!isNumberValid) {
-                            colors
-                                .trailingIconColor(enabled = true, isError = true)
-                                .value
-                        } else {
-                            colors
-                                .trailingIconColor(enabled = true, isError = false)
-                                .value
-                        },
-                    )
+                    phoneNumber = TextFieldValue("")
+                    isNumberValid = false
+                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                 }
             }
         },
@@ -258,7 +238,7 @@ fun TogiCountryCodePicker(
             onDone = {
                 keyboardController?.hide()
                 coroutineScope.launch {
-                    freeFocus(focusRequester)
+                    focusRequester.safeFreeFocus()
                 }
             },
         ),
@@ -268,9 +248,9 @@ fun TogiCountryCodePicker(
     )
 }
 
-private fun freeFocus(focusRequester: FocusRequester) {
+private fun FocusRequester.safeFreeFocus() {
     try {
-        focusRequester.freeFocus()
+        this.freeFocus()
     } catch (exception: IllegalStateException) {
         Log.e(TAG, "Unable to free focus", exception)
     }
@@ -285,33 +265,18 @@ private fun PlaceholderNumberHint(countryIso: Iso31661alpha2) {
     )
 }
 
-@ExperimentalComposeUiApi
-internal fun Modifier.autofill(
-    autofillTypes: List<AutofillType>,
-    onFill: (String) -> Unit,
-    focusRequester: FocusRequester,
-): Modifier = this then composed {
-    val autofill = LocalAutofill.current
-    val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
-    LocalAutofillTree.current += autofillNode
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
-
-    this
-        .onGloballyPositioned {
-            autofillNode.boundingBox = it.boundsInWindow()
-        }
-        .onFocusChanged { focusState ->
-            autofill?.run {
-                if (focusState.isFocused) {
-                    requestAutofillForNode(autofillNode)
-                } else {
-                    cancelAutofillForNode(autofillNode)
-                }
-            }
-        }
+@Composable
+private fun ClearIconButton(
+    imageVector: ImageVector,
+    colors: TextFieldColors,
+    isNumberValid: Boolean,
+    onClick: () -> Unit,
+) = IconButton(onClick = onClick) {
+    Icon(
+        imageVector = imageVector,
+        contentDescription = stringResource(id = R.string.clear),
+        tint = colors.trailingIconColor(enabled = true, isError = !isNumberValid).value,
+    )
 }
 
 @Preview
