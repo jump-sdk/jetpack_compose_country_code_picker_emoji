@@ -43,7 +43,6 @@ internal fun TogiCodeDialog(
     showCountryCode: Boolean,
     showFlag: Boolean,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -61,7 +60,7 @@ internal fun TogiCodeDialog(
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -70,6 +69,7 @@ internal fun TogiCodeDialog(
             },
     ) {
         CountryRow(
+            modifier = Modifier.padding(DEFAULT_PADDING),
             showCountryCode = showCountryCode,
             showFlag = showFlag,
             country = country,
@@ -78,7 +78,9 @@ internal fun TogiCodeDialog(
 
         if (isOpenDialog) {
             CountryDialog(
-                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(DEFAULT_ROUNDING)),
                 onDismissRequest = { isOpenDialog = false },
                 onSelect = { countryItem ->
                     onCountryChange(countryItem)
@@ -102,7 +104,9 @@ private fun CountryRow(
     showFlag: Boolean,
     country: CountryData,
     textStyle: TextStyle,
+    modifier: Modifier = Modifier,
 ) = Row(
+    modifier = modifier,
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically,
 ) {

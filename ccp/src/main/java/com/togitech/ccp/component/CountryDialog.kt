@@ -175,12 +175,12 @@ private fun CountryRowItem(
 ) {
     Row(
         Modifier
+            .clickable(onClick = { onSelect() })
             .padding(
                 horizontal = rowPadding,
                 vertical = rowPadding * ROW_PADDING_VERTICAL_SCALING,
             )
-            .fillMaxWidth()
-            .clickable(onClick = { onSelect() }),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
