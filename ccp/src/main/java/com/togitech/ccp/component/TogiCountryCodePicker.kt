@@ -3,7 +3,6 @@ package com.togitech.ccp.component
 import android.util.Log
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -204,7 +203,6 @@ fun TogiCountryCodePicker(
         },
         leadingIcon = {
             TogiCodeDialog(
-                modifier = Modifier.padding(DEFAULT_PADDING),
                 selectedCountry = country,
                 includeOnly = includeOnly,
                 onCountryChange = { countryData ->
