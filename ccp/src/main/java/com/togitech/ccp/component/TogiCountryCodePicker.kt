@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -57,6 +58,7 @@ import com.togitech.ccp.data.utils.getUserIsoCode
 import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.coroutines.launch
 
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 private const val TAG = "TogiCountryCodePicker"
@@ -154,6 +156,8 @@ fun TogiCountryCodePicker(
         )
     }
 
+    val coroutineScope = rememberCoroutineScope()
+
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
@@ -184,11 +188,8 @@ fun TogiCountryCodePicker(
                     )
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
-                    // https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues/42
-                    try {
+                    coroutineScope.launch {
                         focusRequester.freeFocus()
-                    } catch (exception: IllegalStateException) {
-                        Log.e(TAG, "Unable to free focus", exception)
                     }
                 },
                 focusRequester = focusRequester,
@@ -254,7 +255,9 @@ fun TogiCountryCodePicker(
         keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
-                focusRequester.freeFocus()
+                coroutineScope.launch {
+                    focusRequester.freeFocus()
+                }
             },
         ),
         singleLine = true,
