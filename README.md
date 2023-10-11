@@ -32,8 +32,8 @@ See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose
 Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/ccp/com.togitech.ccp.component/-togi-country-code-picker.html) for all available composables and utilities.
 
 ```kotlin 
-var phoneNumber by rememberSaveable { mutableStateOf("") }
-var fullPhoneNumber by rememberSaveable { mutableStateOf("") }
+var phoneNumber: String by rememberSaveable { mutableStateOf("") }
+var fullPhoneNumber: String by rememberSaveable { mutableStateOf("") }
 var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
 TogiCountryCodePicker(
@@ -80,27 +80,26 @@ Step 1: In the build.gradle add Jitpack repository.
 In Groovy:
 
 ```groovy
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 ```
 
 In Kts:
 
 ```kotlin
-    repositories {
-        maven("https://jitpack.io")
-    }
-
+repositories {
+    maven("https://jitpack.io")
+}
 ```
 
 Step 2. Add the dependency
 
 ```kotlin 
-	dependencies {
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.0")
-	}  
+dependencies {
+    implementation("androidx.compose.material:material:1.5.3")
+    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.4")
+}  
 ```
 
 ## Contributing
@@ -108,7 +107,7 @@ Step 2. Add the dependency
 * [PRs](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/pulls) and [bug reports / feature requests](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues) are welcome!
 * This project is linted with [ktlint](https://github.com/pinterest/ktlint) and statically checked with [detekt](https://github.com/detekt/detekt)
 * Additional checking done with [Twitter's](https://twitter.github.io/compose-rules/detekt/) and [appKODE's](https://github.com/appKODE/detekt-rules-compose) Jetpack Compose rules for Detekt
-* Treat other people with helpfulness, gratitude, and consideration! See the [JetBrains CoC](https://confluence.jetbrains.com/display/ALL/JetBrains+Open+Source+and+Community+Code+of+Conduct)
+* Treat other people with helpfulness, gratitude, and consideration! See the [Code of Conduct](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/blob/master/CODE_OF_CONDUCT.md)
 * Use precommit hook `./gradlew :ccp:detektMain :ccp:lint :ccp:verifyPaparazziDebug` to check code quality before commit
 
 

@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: set up JDK 17
@@ -23,11 +21,9 @@ jobs:
       uses: gradle/wrapper-validation-action@v1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Detekt
+    - name: Detekt (Typed)
       run: ./gradlew :ccp:detektMain
-    - name: Lint
-      run: ./gradlew :ccp:lint
-    - name: Paparazzi snapshot test
-      run: ./gradlew :ccp:verifyPaparazziDebug
+    - name: Check (Lint and test)
+      run: ./gradlew :ccp:check
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assemble
