@@ -32,18 +32,20 @@ See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose
 Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/ccp/com.togitech.ccp.component/-togi-country-code-picker.html) for all available composables and utilities.
 
 ```kotlin 
-var phoneNumber = rememberSaveable { mutableStateOf("") }
-var fullPhoneNumber = rememberSaveable { mutableStateOf("") }
+var phoneNumber by rememberSaveable { mutableStateOf("") }
+var fullPhoneNumber by rememberSaveable { mutableStateOf("") }
 var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
 TogiCountryCodePicker(
+    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
     onValueChange = { (code, phone), isValid ->
         Log.d("CCP", "onValueChange: $code $phone -> $isValid")
-        
-        phoneNumber.value = phone
-        fullPhoneNumber.value = code + phone
+
+        phoneNumber = phone
+        fullPhoneNumber = code + phone
         isNumberValid = isValid
     },
+    label = { Text("Phone Number") },
 )
 ```
 
