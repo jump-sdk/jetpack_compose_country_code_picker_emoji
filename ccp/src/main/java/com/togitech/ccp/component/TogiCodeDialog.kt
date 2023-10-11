@@ -43,7 +43,6 @@ internal fun TogiCodeDialog(
     showCountryCode: Boolean,
     showFlag: Boolean,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -70,7 +69,7 @@ internal fun TogiCodeDialog(
             },
     ) {
         CountryRow(
-            modifier = modifier,
+            modifier = Modifier.padding(DEFAULT_PADDING),
             showCountryCode = showCountryCode,
             showFlag = showFlag,
             country = country,
@@ -101,11 +100,11 @@ internal fun TogiCodeDialog(
 
 @Composable
 private fun CountryRow(
-    modifier: Modifier = Modifier,
     showCountryCode: Boolean,
     showFlag: Boolean,
     country: CountryData,
     textStyle: TextStyle,
+    modifier: Modifier = Modifier,
 ) = Row(
     modifier = modifier,
     horizontalArrangement = Arrangement.SpaceBetween,
