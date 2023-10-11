@@ -181,7 +181,11 @@ fun TogiCountryCodePicker(
                     )
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
-                    focusRequester.freeFocus()
+                    try {
+                        focusRequester.freeFocus()
+                    } catch (exception: IllegalStateException) {
+                        Log.e(TAG, "Unable to free focus ${exception.stackTrace}")
+                    }
                 },
                 focusRequester = focusRequester,
             )
