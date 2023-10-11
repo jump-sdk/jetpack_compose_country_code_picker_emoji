@@ -90,7 +90,7 @@ private const val TAG = "TogiCountryCodePicker"
  * @param [keyboardActions] An optional [KeyboardActions] to customize keyboard actions.
  */
 @OptIn(ExperimentalComposeUiApi::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 fun TogiCountryCodePicker(
     onValueChange: (Pair<PhoneCode, String>, Boolean) -> Unit,
@@ -113,7 +113,7 @@ fun TogiCountryCodePicker(
     ),
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
-    ) {
+) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
     var phoneNumber by remember {
