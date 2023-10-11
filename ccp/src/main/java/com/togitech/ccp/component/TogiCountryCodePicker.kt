@@ -192,11 +192,7 @@ fun TogiCountryCodePicker(
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
                     coroutineScope.launch {
-                        try {
-                            focusRequester.freeFocus()
-                        } catch (exception: IllegalStateException) {
-                            Log.e(TAG, "Unable to free focus", exception)
-                        }
+                        freeFocus(focusRequester)
                     }
                 },
                 focusRequester = focusRequester,
@@ -262,11 +258,7 @@ fun TogiCountryCodePicker(
             onDone = {
                 keyboardController?.hide()
                 coroutineScope.launch {
-                    try {
-                        focusRequester.freeFocus()
-                    } catch (exception: IllegalStateException) {
-                        Log.e(TAG, "Unable to free focus", exception)
-                    }
+                    freeFocus(focusRequester)
                 }
             },
         ),
@@ -274,6 +266,14 @@ fun TogiCountryCodePicker(
         shape = shape,
         colors = colors,
     )
+}
+
+private fun freeFocus(focusRequester: FocusRequester) {
+    try {
+        focusRequester.freeFocus()
+    } catch (exception: IllegalStateException) {
+        Log.e(TAG, "Unable to free focus", exception)
+    }
 }
 
 @Composable
