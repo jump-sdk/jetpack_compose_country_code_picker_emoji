@@ -8,6 +8,9 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea/jarRepositories.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/apollo.xml
+/.idea/graphql-settings.xml
 .DS_Store
 /build
 /captures

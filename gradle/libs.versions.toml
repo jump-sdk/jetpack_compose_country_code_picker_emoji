@@ -9,22 +9,23 @@ compileSdk = "34"
 
 # Dependencies
 android-gradle-plugin = "8.2.0-beta06"
-gradle-versions = "0.48.0"
+gradle-versions = "0.49.0"
 detekt = "1.23.1"
 
 accompanist = "0.32.0"
-androidx-activity-compose = "1.8.0-rc01"
+androidx-activity-compose = "1.8.0"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.6.2"
 androidx-test-junit = "1.1.5"
 
-compose = "1.5.2"
+# update version in README when changing below
+compose = "1.5.3"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 composeCompiler = "1.5.3"
 
 kotlinx-coroutines = "1.7.3"
-kotlinx-collections-immutable = "0.3.5"
+kotlinx-collections-immutable = "0.3.6"
 
 libphonenumber = "8.13.17"
 

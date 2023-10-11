@@ -78,7 +78,8 @@ afterEvaluate {
                 from(components.getByName("release"))
                 groupId = "com.togisoft"
                 artifactId = "jetpack_country_code_picker"
-                version = "2.2.0"
+                // Update version in README when changing below
+                version = "2.2.3"
             }
         }
     }

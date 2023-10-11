@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldColors
@@ -39,9 +40,11 @@ import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
@@ -60,25 +63,29 @@ private const val TAG = "TogiCountryCodePicker"
 
 /**
  * @param onValueChange Called when the text in the text field changes.
- * The first parameter is string pair of (country code, phone number) and the second parameter is
+ * The first parameter is string pair of (country phone code, phone number) and the second parameter is
  * a boolean indicating whether the phone number is valid.
  * @param modifier Modifier to be applied to the inner OutlinedTextField.
  * @param enabled Boolean indicating whether the field is enabled.
  * @param shape Shape of the text field.
  * @param showCountryCode Whether to show the country code in the text field.
  * @param showCountryFlag Whether to show the country flag in the text field.
- * @param colors Colors to be used for the text field.
+ * @param colors TextFieldColors to be used for the text field.
  * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
- * @param showPlaceholder Whether to show the placeholder number in the text field.
+ * Defaults to the United States.
+ * @param showPlaceholder Whether to show the placeholder number hint in the text field.
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
- * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ * @param clearIcon ImageVector to be used for the clear button. Set to null to disable the clear button.
+ * Defaults to Icons.Filled.Clear
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
- * @param initialCountryIsoCode  an optional ISO-3166-1 alpha-2 country code equivalent of the MCC (Mobile Country Code)
- * of the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
- * @param initialCountryPhoneCode an optional Phone calling code of initially selected country
+ * @param initialCountryIsoCode Optional ISO-3166-1 alpha-2 country code to set the initially selected country.
+ * Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
+ * @param initialCountryPhoneCode Optional country phone code to set the initially selected country.
+ * This takes precedence over [initialCountryIsoCode].
  * @param label An optional composable to be used as a label for input field
- * @param textStyle An optional [TextStyle] for customizing text style of phone number input field
+ * @param textStyle An optional [TextStyle] for customizing text style of phone number input field.
+ * Defaults to MaterialTheme.typography.body1
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -99,14 +106,19 @@ fun TogiCountryCodePicker(
     initialCountryIsoCode: Iso31661alpha2? = null,
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
-    textStyle: TextStyle = TextStyle(),
-    keyboardOptions: KeyboardOptions? = null,
-    keyboardActions: KeyboardActions? = null,
+    textStyle: TextStyle = MaterialTheme.typography.body1.copy(
+        color = MaterialTheme.colors.onSurface,
+    ),
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
-    var phoneNumber by rememberSaveable(initialPhoneNumber) {
-        mutableStateOf(initialPhoneNumber.orEmpty())
+    var phoneNumber by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = initialPhoneNumber.orEmpty(),
+                selection = TextRange(initialPhoneNumber?.length ?: 0),
+            ),
+        )
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -118,14 +130,14 @@ fun TogiCountryCodePicker(
         if (initialPhoneNumber?.startsWith("+") == true) {
             Log.e(TAG, "initialPhoneNumber must not include the country code")
         }
-        if (initialCountryPhoneCode?.startsWith("+") != true) {
+        if (initialCountryPhoneCode?.run { !startsWith("+") } == true) {
             Log.e(TAG, "initialCountryPhoneCode must start with +")
         }
-        val initialCountry: CountryData? = initialCountryPhoneCode?.let {
-            getCountryFromPhoneCode(it, context)
-        } ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
         mutableStateOf(
-            initialCountry ?: CountryData.isoMap[getUserIsoCode(context)] ?: fallbackCountry,
+            initialCountryPhoneCode?.let { getCountryFromPhoneCode(it, context) }
+                ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
+                ?: CountryData.isoMap[getUserIsoCode(context)]
+                ?: fallbackCountry,
         )
     }
 
@@ -137,7 +149,7 @@ fun TogiCountryCodePicker(
     var isNumberValid: Boolean by rememberSaveable(country, phoneNumber) {
         mutableStateOf(
             validatePhoneNumber(
-                fullPhoneNumber = country.countryPhoneCode + phoneNumber,
+                fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             ),
         )
     }
@@ -145,18 +157,40 @@ fun TogiCountryCodePicker(
     OutlinedTextField(
         value = phoneNumber,
         onValueChange = { enteredPhoneNumber ->
-            phoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
-            isNumberValid = validatePhoneNumber(
-                fullPhoneNumber = country.countryPhoneCode + phoneNumber,
+            val preFilteredPhoneNumber = phoneNumberTransformation.preFilter(enteredPhoneNumber)
+            phoneNumber = TextFieldValue(
+                text = preFilteredPhoneNumber,
+                selection = TextRange(preFilteredPhoneNumber.length),
             )
-            onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
+            isNumberValid = validatePhoneNumber(
+                fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
+            )
+            onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
         },
         modifier = modifier
             .fillMaxWidth()
             .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
-                onFill = { phoneNumber = it },
+                onFill = { filledPhoneNumber ->
+                    val preFilteredPhoneNumber =
+                        phoneNumberTransformation.preFilter(filledPhoneNumber)
+                    phoneNumber = TextFieldValue(
+                        text = preFilteredPhoneNumber,
+                        selection = TextRange(preFilteredPhoneNumber.length),
+                    )
+                    isNumberValid = validatePhoneNumber(
+                        fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
+                    )
+                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
+                    keyboardController?.hide()
+                    // https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues/42
+                    try {
+                        focusRequester.freeFocus()
+                    } catch (exception: IllegalStateException) {
+                        Log.e(TAG, "Unable to free focus", exception)
+                    }
+                },
                 focusRequester = focusRequester,
             )
             .focusRequester(focusRequester = focusRequester),
@@ -176,22 +210,22 @@ fun TogiCountryCodePicker(
                 onCountryChange = { countryData ->
                     country = countryData
                     isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = country.countryPhoneCode + phoneNumber,
+                        fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
                     )
-                    onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
+                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                 },
-                textColor = colors.textColor(enabled = enabled).value,
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
+                textStyle = textStyle,
             )
         },
         trailingIcon = {
             clearIcon?.let {
                 IconButton(
                     onClick = {
-                        phoneNumber = ""
+                        phoneNumber = TextFieldValue("")
                         isNumberValid = false
-                        onValueChange(country.countryPhoneCode to phoneNumber, isNumberValid)
+                        onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     },
                 ) {
                     Icon(
@@ -212,12 +246,12 @@ fun TogiCountryCodePicker(
         },
         isError = !isNumberValid,
         visualTransformation = phoneNumberTransformation,
-        keyboardOptions = keyboardOptions ?: KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-                autoCorrect = true,
-                imeAction = ImeAction.Done,
-            ),
-        keyboardActions = keyboardActions?: KeyboardActions(
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone,
+            autoCorrect = true,
+            imeAction = ImeAction.Done,
+        ),
+        keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
                 focusRequester.freeFocus()

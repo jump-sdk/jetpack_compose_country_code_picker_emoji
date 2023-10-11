@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
@@ -40,9 +40,9 @@ internal fun TogiCodeDialog(
     selectedCountry: CountryData,
     includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
-    textColor: Color,
     showCountryCode: Boolean,
     showFlag: Boolean,
+    textStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -73,7 +73,7 @@ internal fun TogiCodeDialog(
             showCountryCode = showCountryCode,
             showFlag = showFlag,
             country = country,
-            textColor = textColor,
+            textStyle = textStyle,
         )
 
         if (isOpenDialog) {
@@ -86,6 +86,11 @@ internal fun TogiCodeDialog(
                     isOpenDialog = false
                 },
                 countryList = countryList.toImmutableList(),
+                textStyle = if (textStyle.color != Color.Unspecified) {
+                    textStyle
+                } else {
+                    textStyle.copy(color = MaterialTheme.colors.onSurface)
+                },
             )
         }
     }
@@ -96,8 +101,7 @@ private fun CountryRow(
     showCountryCode: Boolean,
     showFlag: Boolean,
     country: CountryData,
-    textColor: Color,
-    fontWeight: FontWeight = FontWeight.Medium,
+    textStyle: TextStyle,
 ) = Row(
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically,
@@ -109,14 +113,12 @@ private fun CountryRow(
             showCountryCode = showCountryCode,
         ),
         modifier = Modifier.padding(start = DEFAULT_PADDING),
-        fontStyle = MaterialTheme.typography.body1.fontStyle,
-        fontWeight = fontWeight,
-        color = textColor,
+        style = textStyle.copy(color = textStyle.color.copy(alpha = 1f)),
     )
     Icon(
         imageVector = Icons.Default.ArrowDropDown,
         contentDescription = null,
-        tint = textColor,
+        tint = textStyle.color,
     )
 }
 
@@ -135,9 +137,9 @@ private fun TogiCodeDialogPreview() {
     TogiCodeDialog(
         selectedCountry = CountryData.UnitedStates,
         includeOnly = null,
-        textColor = MaterialTheme.colors.onSurface,
+        onCountryChange = {},
         showCountryCode = true,
         showFlag = true,
-        onCountryChange = {},
+        textStyle = TextStyle(),
     )
 }
