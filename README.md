@@ -68,6 +68,8 @@ TogiCountryCodePicker(
 | initialCountryPhoneCode | Optional country phone code to set the initially selected country. This takes precedence over initialCountryIsoCode.                                                                                                                                       |
 | label                   | An optional composable to be used as a label for input field.                                                                                                                                                                                              |                  
 | textStyle               | An optional [TextStyle](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle) for customizing text style of phone number input field. Defaults to MaterialTheme.typography.body1                                              |
+| keyboardOptions         | An optional [KeyboardOptions](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardOptions) to customize keyboard options.                                                                                              |
+| keyboardActions         | An optional [KeyboardActions](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardActions) to customize keyboard actions.                                                                                              |
 
 
 
@@ -97,8 +99,7 @@ Step 2. Add the dependency
 
 ```kotlin 
 	dependencies {
-	    implementation("androidx.compose.material:material:1.5.3")
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.3")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.0")
 	}  
 ```
 

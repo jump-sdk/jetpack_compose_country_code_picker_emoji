@@ -85,9 +85,11 @@ private const val TAG = "TogiCountryCodePicker"
  * @param label An optional composable to be used as a label for input field
  * @param textStyle An optional [TextStyle] for customizing text style of phone number input field.
  * Defaults to MaterialTheme.typography.body1
+ * @param [keyboardOptions] An optional [KeyboardOptions] to customize keyboard options.
+ * @param [keyboardActions] An optional [KeyboardActions] to customize keyboard actions.
  */
 @OptIn(ExperimentalComposeUiApi::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 fun TogiCountryCodePicker(
     onValueChange: (Pair<PhoneCode, String>, Boolean) -> Unit,
@@ -108,6 +110,8 @@ fun TogiCountryCodePicker(
     textStyle: TextStyle = MaterialTheme.typography.body1.copy(
         color = MaterialTheme.colors.onSurface,
     ),
+    keyboardOptions: KeyboardOptions? = null,
+    keyboardActions: KeyboardActions? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -244,12 +248,12 @@ fun TogiCountryCodePicker(
         },
         isError = !isNumberValid,
         visualTransformation = phoneNumberTransformation,
-        keyboardOptions = KeyboardOptions.Default.copy(
+        keyboardOptions = keyboardOptions ?: KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone,
             autoCorrect = true,
             imeAction = ImeAction.Done,
         ),
-        keyboardActions = KeyboardActions(
+        keyboardActions = keyboardActions ?: KeyboardActions(
             onDone = {
                 keyboardController?.hide()
                 focusRequester.freeFocus()
