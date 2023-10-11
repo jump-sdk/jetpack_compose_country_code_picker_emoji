@@ -32,35 +32,37 @@ See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose
 Also check out the [ComposeCountryCodePicker documentation](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/ccp/com.togitech.ccp.component/-togi-country-code-picker.html) for all available composables and utilities.
 
 ```kotlin 
-        var phoneNumber = rememberSaveable { mutableStateOf("") }
-        var fullPhoneNumber = rememberSaveable { mutableStateOf("") }
-        var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
+var phoneNumber by rememberSaveable { mutableStateOf("") }
+var fullPhoneNumber by rememberSaveable { mutableStateOf("") }
+var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
-        TogiCountryCodePicker(
-            onValueChange = { (code, phone), isValid ->
-                Log.d("CCP", "onValueChange: $code $phone -> $isValid")
-                
-                phoneNumber.value = phone
-                fullPhoneNumber.value = code + phone
-                isNumberValid = isValid
-            },
-        )
+TogiCountryCodePicker(
+    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+    onValueChange = { (code, phone), isValid ->
+        Log.d("CCP", "onValueChange: $code $phone -> $isValid")
+
+        phoneNumber = phone
+        fullPhoneNumber = code + phone
+        isNumberValid = isValid
+    },
+    label = { Text("Phone Number") },
+)
 ```
 
 
 | Parameter               | Description                                                                                                                                                                                                                                                |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| onValueChange           | Called when the text in the text field changes. The first parameter is string pair of (country code, phone number) and the second parameter is a boolean indicating whether the phone number is valid.                                                     |
+| onValueChange           | Called when the text in the text field changes. The first parameter is string pair of (country phone code, phone number) and the second parameter is a boolean indicating whether the phone number is valid.                                               |
 | modifier                | Modifier to be applied to the inner OutlinedTextField.                                                                                                                                                                                                     |
 | enabled                 | Boolean indicating whether the field is enabled.                                                                                                                                                                                                           |
 | shape                   | Shape of the text field.                                                                                                                                                                                                                                   |
 | showCountryCode         | Whether to show the country code in the text field.                                                                                                                                                                                                        |
 | showCountryFlag         | Whether to show the country flag in the text field.                                                                                                                                                                                                        |
-| colors                  | Colors to be used for the text field. Defaults to [outlinedTextFieldColors](https://developer.android.com/reference/kotlin/androidx/compose/material/TextFieldDefaults)                                                                                    |
+| colors                  | TextFieldColors to be used for the text field. Defaults to [outlinedTextFieldColors](https://developer.android.com/reference/kotlin/androidx/compose/material/TextFieldDefaults)                                                                           |
 | fallbackCountry         | The country to be used as a fallback if the user's country cannot be determined. Defaults to the United States. See [CountryData](https://jump-sdk.github.io/jetpack_compose_country_code_picker_emoji/ccp/com.togitech.ccp.data/-country-data/index.html) |
-| showPlaceholder         | Whether to show the placeholder number in the text field.                                                                                                                                                                                                  |
+| showPlaceholder         | Whether to show the placeholder number hint in the text field.                                                                                                                                                                                             |
 | includeOnly             | A set of 2 digit country codes to be included in the list of countries. Set to null to include all supported countries.                                                                                                                                    |
-| clearIcon               | The icon to be used for the clear button. Set to null to disable the clear button.                                                                                                                                                                         |
+| clearIcon               | ImageVector to be used for the clear button. Set to null to disable the clear button. Defaults to Icons.Filled.Clear                                                                                                                                       |
 | initialPhoneNumber      | An optional phone number to be initial value of the input field.                                                                                                                                                                                           |
 | initialCountryIsoCode   | Optional ISO-3166-1 alpha-2 country code to set the initially selected country. Note that if a valid initialCountryPhoneCode is provided, this will be ignored.                                                                                            |
 | initialCountryPhoneCode | Optional country phone code to set the initially selected country. This takes precedence over initialCountryIsoCode.                                                                                                                                       |
@@ -96,7 +98,7 @@ Step 2. Add the dependency
 ```kotlin 
 	dependencies {
 	    implementation("androidx.compose.material:material:1.5.3")
-	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.1")
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.3")
 	}  
 ```
 

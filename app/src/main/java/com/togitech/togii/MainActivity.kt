@@ -68,8 +68,8 @@ fun CountryCodePick() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val phoneNumber = rememberSaveable { mutableStateOf("") }
-        val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
+        var phoneNumber by rememberSaveable { mutableStateOf("") }
+        var fullPhoneNumber by rememberSaveable { mutableStateOf("") }
         var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
         Spacer(modifier = Modifier.height(100.dp))
@@ -78,21 +78,21 @@ fun CountryCodePick() {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
             onValueChange = { (code, phone), isValid ->
                 Log.d("CCP", "onValueChange: $code $phone -> $isValid")
-                phoneNumber.value = phone
-                fullPhoneNumber.value = code + phone
+                phoneNumber = phone
+                fullPhoneNumber = code + phone
                 isNumberValid = isValid
             },
-            label = { Text("Test Label") },
+            label = { Text("Phone Number") },
         )
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = "Full Phone Number: ${fullPhoneNumber.value}",
+            text = "Full Phone Number: $fullPhoneNumber",
             color = if (!isNumberValid) Color.Red else Color.Green,
         )
 
         Text(
-            text = "Only Phone Number: ${phoneNumber.value}",
+            text = "Only Phone Number: $phoneNumber",
             color = if (!isNumberValid) Color.Red else Color.Green,
         )
         Spacer(modifier = Modifier.weight(1f))
