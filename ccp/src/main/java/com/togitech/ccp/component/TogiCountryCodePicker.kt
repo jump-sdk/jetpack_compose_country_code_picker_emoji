@@ -63,20 +63,21 @@ private const val TAG = "TogiCountryCodePicker"
 
 /**
  * @param onValueChange Called when the text in the text field changes.
- * The first parameter is string pair of (country code, phone number) and the second parameter is
+ * The first parameter is string pair of (country phone code, phone number) and the second parameter is
  * a boolean indicating whether the phone number is valid.
  * @param modifier Modifier to be applied to the inner OutlinedTextField.
  * @param enabled Boolean indicating whether the field is enabled.
  * @param shape Shape of the text field.
  * @param showCountryCode Whether to show the country code in the text field.
  * @param showCountryFlag Whether to show the country flag in the text field.
- * @param colors Colors to be used for the text field.
+ * @param colors TextFieldColors to be used for the text field.
  * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
  * Defaults to the United States.
- * @param showPlaceholder Whether to show the placeholder number in the text field.
+ * @param showPlaceholder Whether to show the placeholder number hint in the text field.
  * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
  * Set to null to include all supported countries.
- * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ * @param clearIcon ImageVector to be used for the clear button. Set to null to disable the clear button.
+ * Defaults to Icons.Filled.Clear
  * @param initialPhoneNumber an optional phone number to be initial value of the input field
  * @param initialCountryIsoCode Optional ISO-3166-1 alpha-2 country code to set the initially selected country.
  * Note that if a valid initialCountryPhoneCode is provided, this will be ignored.
@@ -105,7 +106,9 @@ fun TogiCountryCodePicker(
     initialCountryIsoCode: Iso31661alpha2? = null,
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
-    textStyle: TextStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onSurface),
+    textStyle: TextStyle = MaterialTheme.typography.body1.copy(
+        color = MaterialTheme.colors.onSurface,
+    ),
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -181,6 +184,7 @@ fun TogiCountryCodePicker(
                     )
                     onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
                     keyboardController?.hide()
+                    // https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues/42
                     try {
                         focusRequester.freeFocus()
                     } catch (exception: IllegalStateException) {
