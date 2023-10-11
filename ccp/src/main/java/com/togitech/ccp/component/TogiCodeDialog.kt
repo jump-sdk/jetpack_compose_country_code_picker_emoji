@@ -61,7 +61,7 @@ internal fun TogiCodeDialog(
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -70,6 +70,7 @@ internal fun TogiCodeDialog(
             },
     ) {
         CountryRow(
+            modifier = modifier,
             showCountryCode = showCountryCode,
             showFlag = showFlag,
             country = country,
@@ -78,7 +79,9 @@ internal fun TogiCodeDialog(
 
         if (isOpenDialog) {
             CountryDialog(
-                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(DEFAULT_ROUNDING)),
                 onDismissRequest = { isOpenDialog = false },
                 onSelect = { countryItem ->
                     onCountryChange(countryItem)
@@ -98,11 +101,13 @@ internal fun TogiCodeDialog(
 
 @Composable
 private fun CountryRow(
+    modifier: Modifier = Modifier,
     showCountryCode: Boolean,
     showFlag: Boolean,
     country: CountryData,
     textStyle: TextStyle,
 ) = Row(
+    modifier = modifier,
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically,
 ) {
