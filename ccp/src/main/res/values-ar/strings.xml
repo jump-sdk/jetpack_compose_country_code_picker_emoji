@@ -247,4 +247,5 @@
     <string name="search">بحث</string>
     <string name="select_country">أختر دولة</string>
     <string name="invalid_number">رقم الهاتف غير صحيح</string>
+    <string name="clear">محو</string>
 </resources>

@@ -31,7 +31,7 @@ libphonenumber = "8.13.17"
 
 junit = "4.13.2"
 robolectric = "4.10.3"
-paparazzi = "1.3.1"
+paparazzi = "1.3.2-SNAPSHOT"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -64,3 +64,4 @@ roboelectric = { module = "org.robolectric:robolectric", version.ref = "robolect
 [plugins]
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }

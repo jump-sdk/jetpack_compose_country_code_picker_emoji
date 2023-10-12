@@ -247,5 +247,5 @@
     <string name="search">Поиск\u2026</string>
     <string name="select_country">Выберите страну</string>
     <string name="invalid_number">Неверный номер телефона</string>
-
+    <string name="clear">Очистить</string>
 </resources>
