@@ -48,6 +48,7 @@ android {
 dependencies {
     api(libs.kotlinx.immutable)
     api(libs.libphonenumber)
+    implementation(libs.play.services.auth)
     debugImplementation(libs.compose.tooling)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.compose)

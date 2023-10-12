@@ -32,6 +32,7 @@ libphonenumber = "8.13.17"
 junit = "4.13.2"
 robolectric = "4.10.3"
 paparazzi = "1.3.2-SNAPSHOT"
+playServicesAuth = "20.7.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -60,6 +61,7 @@ kotlinx-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immuta
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 
 [plugins]
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }

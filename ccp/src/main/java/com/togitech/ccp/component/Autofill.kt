@@ -1,6 +1,7 @@
 package com.togitech.ccp.component
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillNode
@@ -12,15 +13,19 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalAutofillTree
+import com.togitech.ccp.autofill.PhoneNumberRetrievalResultSender
+import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 internal fun Modifier.autofill(
     autofillTypes: List<AutofillType>,
     onFill: (String) -> Unit,
     focusRequester: FocusRequester,
+    phoneNumberIntentSender: PhoneNumberRetrievalResultSender? = null,
 ): Modifier = this then composed {
     val autofill = LocalAutofill.current
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
+    val coroutineScope = rememberCoroutineScope()
     LocalAutofillTree.current += autofillNode
 
     LaunchedEffect(Unit) {
@@ -34,6 +39,11 @@ internal fun Modifier.autofill(
         .onFocusChanged { focusState ->
             autofill?.run {
                 if (focusState.isFocused) {
+                    coroutineScope.launch {
+                        phoneNumberIntentSender?.triggerPhoneNumberRetrieval {
+                            onFill(it)
+                        }
+                    }
                     requestAutofillForNode(autofillNode)
                 } else {
                     cancelAutofillForNode(autofillNode)

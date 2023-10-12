@@ -40,6 +40,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
+import com.togitech.ccp.autofill.PhoneNumberRetrievalResultSender
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.Iso31661alpha2
 import com.togitech.ccp.data.PhoneCode
@@ -104,6 +105,7 @@ fun TogiCountryCodePicker(
     textStyle: TextStyle = MaterialTheme.typography.body1.copy(
         color = MaterialTheme.colors.onSurface,
     ),
+    phoneNumberIntentSender: PhoneNumberRetrievalResultSender? = null,
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
 ) {
@@ -171,6 +173,7 @@ fun TogiCountryCodePicker(
             .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
+                phoneNumberIntentSender = phoneNumberIntentSender,
                 onFill = { filledPhoneNumber ->
                     val preFilteredPhoneNumber =
                         phoneNumberTransformation.preFilter(filledPhoneNumber)

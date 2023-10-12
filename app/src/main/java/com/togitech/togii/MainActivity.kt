@@ -28,10 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.togitech.ccp.autofill.PhoneNumberRetrievalResultSender
 import com.togitech.ccp.component.TogiCountryCodePicker
 import com.togitech.togii.ui.theme.TogiiTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val phoneNumberIntentSender = PhoneNumberRetrievalResultSender(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +55,9 @@ class MainActivity : ComponentActivity() {
                 ) { top ->
                     top.calculateTopPadding()
                     Surface(modifier = Modifier.fillMaxSize()) {
-                        CountryCodePick()
+                        CountryCodePick(
+                            phoneNumberIntentSender = phoneNumberIntentSender
+                        )
                     }
                 }
             }
@@ -60,7 +66,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CountryCodePick() {
+fun CountryCodePick(
+    phoneNumberIntentSender: PhoneNumberRetrievalResultSender? = null
+) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -82,6 +90,7 @@ fun CountryCodePick() {
                 fullPhoneNumber = code + phone
                 isNumberValid = isValid
             },
+            phoneNumberIntentSender = phoneNumberIntentSender,
             label = { Text("Phone Number") },
         )
         Spacer(modifier = Modifier.height(10.dp))
