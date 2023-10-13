@@ -21,14 +21,10 @@ internal class PhoneParsingUtils(private val context: Context) {
         }
 
     fun getCountryCode(fullPhoneNumber: String): String {
-        return if (fullPhoneNumber.length > MIN_PHONE_LENGTH) {
-            try {
-                val parsedNumber = phoneUtil.parse(fullPhoneNumber, null)
-                phoneUtil.getRegionCodeForCountryCode(parsedNumber.countryCode)
-            } catch (ex: NumberParseException) {
-                ""
-            }
-        } else {
+        return try {
+            val parsedNumber = phoneUtil.parse(fullPhoneNumber, null)
+            phoneUtil.getRegionCodeForCountryCode(parsedNumber.countryCode)
+        } catch (ex: NumberParseException) {
             ""
         }
     }
