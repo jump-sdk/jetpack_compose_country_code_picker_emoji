@@ -106,9 +106,9 @@ fun TogiCountryCodePicker(
     textStyle: TextStyle = MaterialTheme.typography.body1.copy(
         color = MaterialTheme.colors.onSurface,
     ),
-    phoneNumberIntentSender: PhoneNumberRetrievalResultSender? = null,
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
+    phoneNumberIntentSender: PhoneNumberRetrievalResultSender? = null,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
