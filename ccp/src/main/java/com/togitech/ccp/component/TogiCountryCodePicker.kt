@@ -83,6 +83,7 @@ private const val TAG = "TogiCountryCodePicker"
  * Defaults to MaterialTheme.typography.body1
  * @param [keyboardOptions] An optional [KeyboardOptions] to customize keyboard options.
  * @param [keyboardActions] An optional [KeyboardActions] to customize keyboard actions.
+ * @param [phoneNumberIntentSender] An optional [PhoneNumberRetrievalResultSender] to trigger autofill hint
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
