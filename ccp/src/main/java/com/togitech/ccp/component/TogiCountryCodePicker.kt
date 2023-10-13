@@ -45,7 +45,7 @@ import com.togitech.ccp.autofill.PhoneNumberRetrievalResultSender
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.Iso31661alpha2
 import com.togitech.ccp.data.PhoneCode
-import com.togitech.ccp.data.utils.PhoneNumberUtils
+import com.togitech.ccp.data.utils.PhoneParsingUtils
 import com.togitech.ccp.data.utils.getCountryFromPhoneCode
 import com.togitech.ccp.data.utils.getUserIsoCode
 import com.togitech.ccp.data.utils.numberHint
@@ -144,11 +144,11 @@ fun TogiCountryCodePicker(
     val phoneNumberTransformation = remember(country) {
         PhoneNumberTransformation(country.countryIso, context)
     }
-    val phoneNumberUtils = remember(context) { PhoneNumberUtils(context) }
+    val phoneParsingUtils = remember(context) { PhoneParsingUtils(context) }
 
     var isNumberValid: Boolean by rememberSaveable(country, phoneNumber) {
         mutableStateOf(
-            phoneNumberUtils.isValidPhoneNumber(
+            phoneParsingUtils.isValidPhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             ),
         )
@@ -164,7 +164,7 @@ fun TogiCountryCodePicker(
                 text = preFilteredPhoneNumber,
                 selection = TextRange(preFilteredPhoneNumber.length),
             )
-            isNumberValid = phoneNumberUtils.isValidPhoneNumber(
+            isNumberValid = phoneParsingUtils.isValidPhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             )
             onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
@@ -179,12 +179,12 @@ fun TogiCountryCodePicker(
                     val preFilteredPhoneNumber =
                         phoneNumberTransformation.preFilter(filledPhoneNumber)
                     isNumberValid =
-                        phoneNumberUtils.isValidPhoneNumber(fullPhoneNumber = preFilteredPhoneNumber)
-                    val countryCode = phoneNumberUtils.getCountryCode(preFilteredPhoneNumber)
+                        phoneParsingUtils.isValidPhoneNumber(fullPhoneNumber = preFilteredPhoneNumber)
+                    val countryCode = phoneParsingUtils.getCountryCode(preFilteredPhoneNumber)
                     country = CountryData.isoMap.getOrDefault(countryCode, country)
 
                     val nationalPhoneNumber =
-                        phoneNumberUtils.getNationalNumber(preFilteredPhoneNumber)
+                        phoneParsingUtils.getNationalNumber(preFilteredPhoneNumber)
 
                     phoneNumber = TextFieldValue(
                         text = nationalPhoneNumber,
@@ -214,7 +214,7 @@ fun TogiCountryCodePicker(
                     includeOnly = includeOnly,
                     onCountryChange = { countryData ->
                         country = countryData
-                        isNumberValid = phoneNumberUtils.isValidPhoneNumber(
+                        isNumberValid = phoneParsingUtils.isValidPhoneNumber(
                             fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
                         )
                         onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)

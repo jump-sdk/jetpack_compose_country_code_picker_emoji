@@ -6,7 +6,7 @@ import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
 private const val MIN_PHONE_LENGTH = 6
 
-internal class PhoneNumberUtils(private val context: Context) {
+internal class PhoneParsingUtils(private val context: Context) {
     private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.createInstance(context) }
 
     fun isValidPhoneNumber(fullPhoneNumber: String): Boolean =
