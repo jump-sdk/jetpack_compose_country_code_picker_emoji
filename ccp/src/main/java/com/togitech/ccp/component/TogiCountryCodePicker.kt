@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,7 +45,7 @@ import com.togitech.ccp.autofill.PhoneNumberRetrievalResultSender
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.Iso31661alpha2
 import com.togitech.ccp.data.PhoneCode
-import com.togitech.ccp.data.utils.ValidatePhoneNumber
+import com.togitech.ccp.data.utils.PhoneNumberUtils
 import com.togitech.ccp.data.utils.getCountryFromPhoneCode
 import com.togitech.ccp.data.utils.getUserIsoCode
 import com.togitech.ccp.data.utils.numberHint
@@ -94,7 +95,7 @@ fun TogiCountryCodePicker(
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
-    fallbackCountry: CountryData = CountryData.UnitedStates,
+    fallbackCountry: CountryData = CountryData.India,
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
@@ -143,11 +144,11 @@ fun TogiCountryCodePicker(
     val phoneNumberTransformation = remember(country) {
         PhoneNumberTransformation(country.countryIso, context)
     }
-    val validatePhoneNumber = remember(context) { ValidatePhoneNumber(context) }
+    val phoneNumberUtils = remember(context) { PhoneNumberUtils(context) }
 
     var isNumberValid: Boolean by rememberSaveable(country, phoneNumber) {
         mutableStateOf(
-            validatePhoneNumber(
+            phoneNumberUtils.isValidPhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             ),
         )
@@ -163,7 +164,7 @@ fun TogiCountryCodePicker(
                 text = preFilteredPhoneNumber,
                 selection = TextRange(preFilteredPhoneNumber.length),
             )
-            isNumberValid = validatePhoneNumber(
+            isNumberValid = phoneNumberUtils.isValidPhoneNumber(
                 fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
             )
             onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
@@ -172,19 +173,24 @@ fun TogiCountryCodePicker(
             .fillMaxWidth()
             .focusable()
             .autofill(
-                autofillTypes = listOf(AutofillType.PhoneNumberNational),
+                autofillTypes = listOf(AutofillType.PhoneNumber),
                 phoneNumberIntentSender = phoneNumberIntentSender,
                 onFill = { filledPhoneNumber ->
                     val preFilteredPhoneNumber =
                         phoneNumberTransformation.preFilter(filledPhoneNumber)
+                    isNumberValid =
+                        phoneNumberUtils.isValidPhoneNumber(fullPhoneNumber = preFilteredPhoneNumber)
+                    val countryCode = phoneNumberUtils.getCountryCode(preFilteredPhoneNumber)
+                    country = CountryData.isoMap.getOrDefault(countryCode, country)
+
+                    val nationalPhoneNumber =
+                        phoneNumberUtils.getNationalNumber(preFilteredPhoneNumber)
+
                     phoneNumber = TextFieldValue(
-                        text = preFilteredPhoneNumber,
-                        selection = TextRange(preFilteredPhoneNumber.length),
+                        text = nationalPhoneNumber,
+                        selection = TextRange(nationalPhoneNumber.length),
                     )
-                    isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
-                    )
-                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
+                    onValueChange(country.countryPhoneCode to nationalPhoneNumber, isNumberValid)
                     keyboardController?.hide()
                     coroutineScope.launch {
                         focusRequester.safeFreeFocus()
@@ -202,20 +208,22 @@ fun TogiCountryCodePicker(
             }
         },
         leadingIcon = {
-            TogiCodeDialog(
-                selectedCountry = country,
-                includeOnly = includeOnly,
-                onCountryChange = { countryData ->
-                    country = countryData
-                    isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
-                    )
-                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
-                },
-                showCountryCode = showCountryCode,
-                showFlag = showCountryFlag,
-                textStyle = textStyle,
-            )
+            key(country) {
+                TogiCodeDialog(
+                    selectedCountry = country,
+                    includeOnly = includeOnly,
+                    onCountryChange = { countryData ->
+                        country = countryData
+                        isNumberValid = phoneNumberUtils.isValidPhoneNumber(
+                            fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
+                        )
+                        onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
+                    },
+                    showCountryCode = showCountryCode,
+                    showFlag = showCountryFlag,
+                    textStyle = textStyle,
+                )
+            }
         },
         trailingIcon = {
             if (clearIcon != null) {

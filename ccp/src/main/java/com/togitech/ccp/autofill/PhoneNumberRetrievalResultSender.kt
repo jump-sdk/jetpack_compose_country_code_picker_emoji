@@ -17,37 +17,38 @@ class PhoneNumberRetrievalResultSender(private val rootActivity: ComponentActivi
 
     private val phoneNumberHintIntentResultLauncher: ActivityResultLauncher<IntentSenderRequest> =
         rootActivity.registerForActivityResult(
-            ActivityResultContracts.StartIntentSenderForResult()
+            ActivityResultContracts.StartIntentSenderForResult(),
         ) {
             onActivityComplete(it)
         }
 
 
-    suspend fun triggerPhoneNumberRetrieval(phoneNumberCallback: (String) -> Unit) = coroutineScope {
-        // A previous contract may still be pending resolution (via the onActivityComplete method).
-        // Wait for the Activity lifecycle to reach the RESUMED state, which guarantees that any
-        // previous Activity results will have been received and their callback cleared. Blocking
-        // here will lead to either (a) the Activity eventually reaching the RESUMED state, or
-        // (b) the Activity terminating, destroying it's lifecycle-linked scope and cancelling this
-        // Job.
-        rootActivity.lifecycle.withResumed { // NOTE: runs in Dispatchers.MAIN context
-            check(callback == null) { "Received an activity start request while another is pending" }
-            callback = phoneNumberCallback
+    suspend fun triggerPhoneNumberRetrieval(phoneNumberCallback: (String) -> Unit) =
+        coroutineScope {
+            // A previous contract may still be pending resolution (via the onActivityComplete method).
+            // Wait for the Activity lifecycle to reach the RESUMED state, which guarantees that any
+            // previous Activity results will have been received and their callback cleared. Blocking
+            // here will lead to either (a) the Activity eventually reaching the RESUMED state, or
+            // (b) the Activity terminating, destroying it's lifecycle-linked scope and cancelling this
+            // Job.
+            rootActivity.lifecycle.withResumed { // NOTE: runs in Dispatchers.MAIN context
+                check(callback == null) { "Received an activity start request while another is pending" }
+                callback = phoneNumberCallback
 
-            val request = GetPhoneNumberHintIntentRequest.builder().build()
+                val request = GetPhoneNumberHintIntentRequest.builder().build()
 
-            Identity.getSignInClient(rootActivity)
-                .getPhoneNumberHintIntent(request)
-                .addOnSuccessListener {
-                    phoneNumberHintIntentResultLauncher.launch(
-                        IntentSenderRequest.Builder(it.intentSender).build()
-                    )
-                }
-                .addOnFailureListener {
-                    Log.d(LOG_TAG, it.message.toString())
-                }
+                Identity.getSignInClient(rootActivity)
+                    .getPhoneNumberHintIntent(request)
+                    .addOnSuccessListener {
+                        phoneNumberHintIntentResultLauncher.launch(
+                            IntentSenderRequest.Builder(it.intentSender).build(),
+                        )
+                    }
+                    .addOnFailureListener {
+                        Log.d(LOG_TAG, it.message.toString())
+                    }
+            }
         }
-    }
 
     private fun onActivityComplete(activityResult: ActivityResult) {
         try {

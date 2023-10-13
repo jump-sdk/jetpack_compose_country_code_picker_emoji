@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -40,8 +41,12 @@ internal fun Modifier.autofill(
             autofill?.run {
                 if (focusState.isFocused) {
                     coroutineScope.launch {
-                        phoneNumberIntentSender?.triggerPhoneNumberRetrieval {
-                            onFill(it)
+                        try {
+                            phoneNumberIntentSender?.triggerPhoneNumberRetrieval {
+                                onFill(it)
+                            }
+                        } catch (exception: IllegalStateException) {
+                            Log.e("AutoFill", "Unable to autofill phone number", exception)
                         }
                     }
                     requestAutofillForNode(autofillNode)
