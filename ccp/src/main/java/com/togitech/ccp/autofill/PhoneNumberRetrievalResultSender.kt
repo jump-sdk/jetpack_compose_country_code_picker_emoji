@@ -45,7 +45,7 @@ class PhoneNumberRetrievalResultSender(private val rootActivity: ComponentActivi
                         )
                     }
                     .addOnFailureListener {
-                        Log.d(LOG_TAG, it.message.toString())
+                        Log.e(LOG_TAG, it.message.toString())
                     }
             }
         }
@@ -56,7 +56,7 @@ class PhoneNumberRetrievalResultSender(private val rootActivity: ComponentActivi
                 .getPhoneNumberFromIntent(activityResult.data)
             callback?.let { it(phoneNumber) }
         } catch (e: Exception) {
-            Log.d(LOG_TAG, e.message.toString())
+            Log.e(LOG_TAG, e.message.toString())
         }
         callback = null
     }
