@@ -95,7 +95,7 @@ fun TogiCountryCodePicker(
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
-    fallbackCountry: CountryData = CountryData.India,
+    fallbackCountry: CountryData = CountryData.UnitedStates,
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
