@@ -43,6 +43,7 @@ internal fun TogiCodeDialog(
     showCountryCode: Boolean,
     showFlag: Boolean,
     textStyle: TextStyle,
+    backgroundColor: Color,
 ) {
     val context = LocalContext.current
 
@@ -93,6 +94,7 @@ internal fun TogiCodeDialog(
                 } else {
                     textStyle.copy(color = MaterialTheme.colors.onSurface)
                 },
+                backgroundColor = backgroundColor,
             )
         }
     }
@@ -145,5 +147,6 @@ private fun TogiCodeDialogPreview() {
         showCountryCode = true,
         showFlag = true,
         textStyle = TextStyle(),
+        backgroundColor = Color.White,
     )
 }

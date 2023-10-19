@@ -70,7 +70,7 @@ TogiCountryCodePicker(
 | textStyle               | An optional [TextStyle](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/TextStyle) for customizing text style of phone number input field. Defaults to MaterialTheme.typography.body1                                              |
 | keyboardOptions         | An optional [KeyboardOptions](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardOptions) to customize keyboard options.                                                                                              |
 | keyboardActions         | An optional [KeyboardActions](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/KeyboardActions) to customize keyboard actions.                                                                                              |
-
+| showError               | Whether to show error on field when number is invalid, default true.                                                                                                                                                                                       |
 
 
 ## How to add in your project
@@ -97,8 +97,8 @@ Step 2. Add the dependency - n.b. this currently does not support Material 3.
 
 ```kotlin 
 dependencies {
-    implementation("androidx.compose.material:material:1.5.3")
-    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.4")
+    implementation("androidx.compose.material:material:1.5.4")
+    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.5")
 }  
 ```
 

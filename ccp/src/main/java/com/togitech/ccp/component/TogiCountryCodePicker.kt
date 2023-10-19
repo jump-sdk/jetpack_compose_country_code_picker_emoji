@@ -81,6 +81,7 @@ private const val TAG = "TogiCountryCodePicker"
  * Defaults to MaterialTheme.typography.body1
  * @param [keyboardOptions] An optional [KeyboardOptions] to customize keyboard options.
  * @param [keyboardActions] An optional [KeyboardActions] to customize keyboard actions.
+ * @param [showError] Whether to show error on field when number is invalid, default true.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
@@ -102,10 +103,11 @@ fun TogiCountryCodePicker(
     initialCountryPhoneCode: PhoneCode? = null,
     label: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.body1.copy(
-        color = MaterialTheme.colors.onSurface,
+        color = colors.textColor(enabled = true).value,
     ),
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
+    showError: Boolean = true,
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
@@ -212,6 +214,7 @@ fun TogiCountryCodePicker(
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
                 textStyle = textStyle,
+                backgroundColor = colors.backgroundColor(enabled = true).value,
             )
         },
         trailingIcon = {
@@ -227,7 +230,7 @@ fun TogiCountryCodePicker(
                 }
             }
         },
-        isError = !isNumberValid,
+        isError = showError && !isNumberValid,
         visualTransformation = phoneNumberTransformation,
         keyboardOptions = keyboardOptions ?: KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone,
