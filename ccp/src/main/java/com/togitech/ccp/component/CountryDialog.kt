@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Divider
+import androidx.compose.material.DividerAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -63,6 +64,7 @@ private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val SEARCH_ICON_PADDING = 5.dp
 private const val HEADER_TEXT_SIZE_MULTIPLE = 1.5
 private val MIN_TAP_DIMENSION = 48.dp
+private const val DIVIDER_ALPHA = 0.12f
 
 /**
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
@@ -72,6 +74,7 @@ private val MIN_TAP_DIMENSION = 48.dp
  * @param countryList The list of countries to display in the dialog.
  * @param rowPadding The padding to be applied to each row.
  * @param backgroundColor The [Color] of the dialog background.
+ * @param dividerColor The [Color] of the country row dividers.
  */
 @Composable
 fun CountryDialog(
@@ -82,6 +85,7 @@ fun CountryDialog(
     countryList: ImmutableList<CountryData> = persistentListOf(),
     rowPadding: Dp = DEFAULT_ROW_PADDING,
     backgroundColor: Color = MaterialTheme.colors.surface,
+    dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = DIVIDER_ALPHA),
 ) {
     val context = LocalContext.current
     var searchValue by rememberSaveable { mutableStateOf("") }
@@ -124,7 +128,7 @@ fun CountryDialog(
                     Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
                     LazyColumn {
                         items(filteredCountries, key = { it.countryIso }) { countryItem ->
-                            Divider()
+                            Divider(color = dividerColor)
                             CountryRowItem(
                                 rowPadding = rowPadding,
                                 onSelect = { onSelect(countryItem) },
