@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.10"
+kotlin = "1.9.20"
 dokka = "1.9.10"
 
 ## SDK Versions
@@ -8,9 +8,9 @@ targetSdk = "34"
 compileSdk = "34"
 
 # Dependencies
-android-gradle-plugin = "8.2.0-rc01"
+android-gradle-plugin = "8.2.0-rc03"
 gradle-versions = "0.49.0"
-detekt = "1.23.1"
+detekt = "1.23.3"
 
 accompanist = "0.32.0"
 androidx-activity-compose = "1.8.0"
@@ -22,15 +22,15 @@ androidx-test-junit = "1.1.5"
 compose = "1.5.4"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-composeCompiler = "1.5.3"
+composeCompiler = "1.5.4"
 
 kotlinx-coroutines = "1.7.3"
 kotlinx-collections-immutable = "0.3.6"
 
-libphonenumber = "8.13.17"
+libphonenumber = "8.13.25"
 
 junit = "4.13.2"
-robolectric = "4.10.3"
+robolectric = "4.11.1"
 paparazzi = "1.3.2-SNAPSHOT"
 
 [libraries]

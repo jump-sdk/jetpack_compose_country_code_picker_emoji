@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -126,18 +128,18 @@ fun TogiCountryCodePicker(
         initialCountryPhoneCode,
         initialCountryIsoCode,
     ) {
-        if (initialPhoneNumber?.startsWith("+") == true) {
-            Log.e(TAG, "initialPhoneNumber must not include the country code")
-        }
-        if (initialCountryPhoneCode?.run { !startsWith("+") } == true) {
-            Log.e(TAG, "initialCountryPhoneCode must start with +")
-        }
         mutableStateOf(
-            initialCountryPhoneCode?.let { getCountryFromPhoneCode(it, context) }
-                ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
-                ?: CountryData.isoMap[getUserIsoCode(context)]
-                ?: fallbackCountry,
+            configureInitialCountry(
+                initialCountryPhoneCode = initialCountryPhoneCode,
+                context = context,
+                initialCountryIsoCode = initialCountryIsoCode,
+                fallbackCountry = fallbackCountry,
+            ),
         )
+    }
+
+    if (initialPhoneNumber?.startsWith("+") == true) {
+        Log.e(TAG, "initialPhoneNumber must not include the country code")
     }
 
     val phoneNumberTransformation = remember(country) {
@@ -214,7 +216,13 @@ fun TogiCountryCodePicker(
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
                 textStyle = textStyle,
-                backgroundColor = colors.backgroundColor(enabled = true).value,
+                backgroundColor = colors.backgroundColor(enabled = true).value.let { color ->
+                    if (color == Color.Unspecified || color == Color.Transparent) {
+                        MaterialTheme.colors.surface
+                    } else {
+                        color
+                    }
+                },
             )
         },
         trailingIcon = {
@@ -249,6 +257,21 @@ fun TogiCountryCodePicker(
         shape = shape,
         colors = colors,
     )
+}
+
+private fun configureInitialCountry(
+    initialCountryPhoneCode: PhoneCode?,
+    context: Context,
+    initialCountryIsoCode: Iso31661alpha2?,
+    fallbackCountry: CountryData,
+): CountryData {
+    if (initialCountryPhoneCode?.run { !startsWith("+") } == true) {
+        Log.e(TAG, "initialCountryPhoneCode must start with +")
+    }
+    return initialCountryPhoneCode?.let { getCountryFromPhoneCode(it, context) }
+        ?: CountryData.entries.firstOrNull { it.countryIso == initialCountryIsoCode }
+        ?: CountryData.isoMap[getUserIsoCode(context)]
+        ?: fallbackCountry
 }
 
 private fun FocusRequester.safeFreeFocus() {
