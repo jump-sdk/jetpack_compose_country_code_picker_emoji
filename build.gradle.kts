@@ -31,7 +31,7 @@ tasks.register<Delete>("clean") {
 tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
     checkForGradleUpdate = true
     rejectVersionIf {
-        listOf("-mercury-", "-station-", "-alpha", "-dev-").any { word ->
+        listOf("2.0.0-Beta1", "2.7.0-beta01", "-alpha", "-dev-").any { word ->
             candidate.version.contains(word)
         }
     }
