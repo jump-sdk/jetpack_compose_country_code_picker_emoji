@@ -222,7 +222,7 @@ fun TogiCountryCodePicker(
                 ClearIconButton(
                     imageVector = clearIcon,
                     colors = colors,
-                    isNumberValid = !showError || isNumberValid ,
+                    isNumberValid = !showError || isNumberValid,
                 ) {
                     phoneNumber = TextFieldValue("")
                     isNumberValid = false
