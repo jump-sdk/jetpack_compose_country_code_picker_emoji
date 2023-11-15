@@ -216,11 +216,11 @@ fun TogiCountryCodePicker(
                 showCountryCode = showCountryCode,
                 showFlag = showCountryFlag,
                 textStyle = textStyle,
-                backgroundColor = colors.backgroundColor(enabled = true).value.let {
-                    if (it == Color.Unspecified || it == Color.Transparent) {
+                backgroundColor = colors.backgroundColor(enabled = true).value.let { color ->
+                    if (color == Color.Unspecified || color == Color.Transparent) {
                         MaterialTheme.colors.surface
                     } else {
-                        it
+                        color
                     }
                 },
             )

@@ -78,7 +78,7 @@ afterEvaluate {
                 groupId = "com.togisoft"
                 artifactId = "jetpack_country_code_picker"
                 // Update version in README when changing below
-                version = "2.2.5"
+                version = "2.2.6"
             }
         }
     }

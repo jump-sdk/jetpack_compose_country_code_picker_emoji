@@ -98,7 +98,7 @@ Step 2. Add the dependency - n.b. this currently does not support Material 3.
 ```kotlin 
 dependencies {
     implementation("androidx.compose.material:material:1.5.4")
-    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.5")
+    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.2.6")
 }  
 ```
 
