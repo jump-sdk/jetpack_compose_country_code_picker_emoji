@@ -9,13 +9,13 @@ compileSdk = "34"
 
 # Dependencies
 android-gradle-plugin = "8.2.0-rc03"
-gradle-versions = "0.49.0"
+gradle-versions = "0.50.0"
 detekt = "1.23.3"
 
 accompanist = "0.32.0"
-androidx-activity-compose = "1.8.0"
+androidx-activity-compose = "1.8.1"
 androidx-core = "1.12.0"
-androidx-lifecycle = "2.6.2"
+androidx-lifecycle = "2.7.0-rc01"
 androidx-test-junit = "1.1.5"
 
 # update version in README when changing below
