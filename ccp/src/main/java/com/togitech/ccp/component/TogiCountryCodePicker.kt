@@ -297,9 +297,9 @@ private fun ClearIconButton(
     imageVector: ImageVector,
     colors: TextFieldColors,
     isNumberValid: Boolean,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
 ) = IconButton(onClick = onClick) {
+    val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     Icon(
         imageVector = imageVector,
         contentDescription = stringResource(id = R.string.clear),
