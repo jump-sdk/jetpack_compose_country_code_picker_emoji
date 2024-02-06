@@ -299,14 +299,14 @@ private fun ClearIconButton(
     isNumberValid: Boolean,
     onClick: () -> Unit,
 ) = IconButton(onClick = onClick) {
-    val interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+
     Icon(
         imageVector = imageVector,
         contentDescription = stringResource(id = R.string.clear),
         tint = colors.trailingIconColor(
             enabled = true,
             isError = !isNumberValid,
-            interactionSource = interactionSource,
+            interactionSource = remember { MutableInteractionSource() },
         ).value,
     )
 }
