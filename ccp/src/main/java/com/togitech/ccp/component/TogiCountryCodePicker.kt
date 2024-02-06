@@ -3,6 +3,7 @@ package com.togitech.ccp.component
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -301,7 +302,11 @@ private fun ClearIconButton(
     Icon(
         imageVector = imageVector,
         contentDescription = stringResource(id = R.string.clear),
-        tint = colors.trailingIconColor(enabled = true, isError = !isNumberValid).value,
+        tint = colors.trailingIconColor(
+            enabled = true,
+            isError = !isNumberValid,
+            interactionSource = remember { MutableInteractionSource() },
+        ).value,
     )
 }
 
