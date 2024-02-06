@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 dokka = "1.9.10"
 
 ## SDK Versions
@@ -13,16 +13,16 @@ gradle-versions = "0.50.0"
 detekt = "1.23.3"
 
 accompanist = "0.32.0"
-androidx-activity-compose = "1.8.1"
+androidx-activity-compose = "1.8.2"
 androidx-core = "1.12.0"
-androidx-lifecycle = "2.7.0-rc01"
+androidx-lifecycle = "2.7.0"
 androidx-test-junit = "1.1.5"
 
 # update version in README when changing below
-compose = "1.5.4"
+compose = "1.6.0"
 # https://androidx.dev/storage/compose-compiler/repository/
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-composeCompiler = "1.5.4"
+composeCompiler = "1.5.8"
 
 kotlinx-coroutines = "1.7.3"
 kotlinx-collections-immutable = "0.3.6"
