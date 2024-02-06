@@ -299,7 +299,6 @@ private fun ClearIconButton(
     isNumberValid: Boolean,
     onClick: () -> Unit,
 ) = IconButton(onClick = onClick) {
-
     Icon(
         imageVector = imageVector,
         contentDescription = stringResource(id = R.string.clear),
