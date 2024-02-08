@@ -47,6 +47,7 @@ import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.Iso31661alpha2
 import com.togitech.ccp.data.PhoneCode
 import com.togitech.ccp.data.utils.ValidatePhoneNumber
+import com.togitech.ccp.data.utils.extractCountryCode
 import com.togitech.ccp.data.utils.getCountryFromPhoneCode
 import com.togitech.ccp.data.utils.getUserIsoCode
 import com.togitech.ccp.data.utils.numberHint
@@ -62,6 +63,7 @@ private const val TAG = "TogiCountryCodePicker"
  * The first parameter is string pair of (country phone code, phone number) and the second parameter is
  * a boolean indicating whether the phone number is valid.
  * @param modifier Modifier to be applied to the inner OutlinedTextField.
+ * @param autoDetectCode Boolean indicating if will auto detect the code from initial phone number
  * @param enabled Boolean indicating whether the field is enabled.
  * @param shape Shape of the text field.
  * @param showCountryCode Whether to show the country code in the text field.
@@ -92,6 +94,7 @@ private const val TAG = "TogiCountryCodePicker"
 fun TogiCountryCodePicker(
     onValueChange: (Pair<PhoneCode, String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    autoDetectCode: Boolean = false,
     enabled: Boolean = true,
     shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
     showCountryCode: Boolean = true,
@@ -114,11 +117,23 @@ fun TogiCountryCodePicker(
 ) {
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
+
+    val countryCode = autoDetectedCountryCode(
+        autoDetectCode = autoDetectCode,
+        initialPhoneNumber = initialPhoneNumber,
+    )
+
+    val phoneNumberWithoutCode = if (countryCode != null) {
+        initialPhoneNumber?.replace(countryCode, "")
+    } else {
+        initialPhoneNumber
+    }
+
     var phoneNumber by remember {
         mutableStateOf(
             TextFieldValue(
-                text = initialPhoneNumber.orEmpty(),
-                selection = TextRange(initialPhoneNumber?.length ?: 0),
+                text = phoneNumberWithoutCode.orEmpty(),
+                selection = TextRange(phoneNumberWithoutCode?.length ?: 0),
             ),
         )
     }
@@ -126,21 +141,18 @@ fun TogiCountryCodePicker(
 
     var country: CountryData by rememberSaveable(
         context,
+        countryCode,
         initialCountryPhoneCode,
         initialCountryIsoCode,
     ) {
         mutableStateOf(
             configureInitialCountry(
-                initialCountryPhoneCode = initialCountryPhoneCode,
+                initialCountryPhoneCode = countryCode ?: initialCountryPhoneCode,
                 context = context,
                 initialCountryIsoCode = initialCountryIsoCode,
                 fallbackCountry = fallbackCountry,
             ),
         )
-    }
-
-    if (initialPhoneNumber?.startsWith("+") == true) {
-        Log.e(TAG, "initialPhoneNumber must not include the country code")
     }
 
     val phoneNumberTransformation = remember(country) {
@@ -309,6 +321,14 @@ private fun ClearIconButton(
         ).value,
     )
 }
+
+@Composable
+private fun autoDetectedCountryCode(autoDetectCode: Boolean, initialPhoneNumber: String?): String? =
+    if (initialPhoneNumber?.startsWith("+") == true && autoDetectCode) {
+        extractCountryCode(initialPhoneNumber)
+    } else {
+        null
+    }
 
 @Preview
 @Composable
