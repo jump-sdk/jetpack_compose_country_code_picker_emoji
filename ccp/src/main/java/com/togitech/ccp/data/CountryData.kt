@@ -249,5 +249,6 @@ enum class CountryData(val countryIso: Iso31661alpha2, val countryPhoneCode: Pho
 
     companion object {
         val isoMap: Map<Iso31661alpha2, CountryData> = entries.associateBy { it.countryIso }
+        internal val phoneCodeMap: Map<PhoneCode, CountryData> = entries.associateBy { it.countryPhoneCode }
     }
 }
